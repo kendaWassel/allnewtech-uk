@@ -1,0 +1,224 @@
+{
+  "hero": {
+    "title": "Get in Touch",
+    "subtitle": "Contact us for a free consultation or site visit"
+  },
+  "siteVisit": {
+    "title": "Book a Site Visit",
+    "intro": "Schedule a professional site assessment with one of our specialists.",
+    "fields": {
+      "contactInfo": {
+        "title": "Contact Information",
+        "fields": [
+          {
+            "name": "fullName",
+            "label": "Full Name",
+            "type": "text",
+            "required": true
+          },
+          {
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
+            "required": true
+          }
+        ]
+      },
+      "siteDetails": {
+        "title": "Site Details",
+        "fields": [
+          {
+            "name": "propertyType",
+            "label": "Property Type",
+            "type": "select",
+            "required": true,
+            "options": [
+              "Home / Residential",
+              "Business / Commercial"
+            ]
+          },
+          {
+            "name": "address",
+            "label": "Address / Postcode",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      "services": {
+        "title": "Services of Interest",
+        "name": "services",
+        "type": "checkbox",
+        "options": [
+          "CCTV",
+          "Alarm System",
+          "Access Control",
+          "Audio & Visual"
+        ]
+      },
+      "timing": {
+        "title": "Preferred Visit Timing",
+        "fields": [
+          {
+            "name": "preferredDate",
+            "label": "Preferred Date",
+            "type": "date",
+            "required": false
+          },
+          {
+            "name": "preferredTime",
+            "label": "Preferred Time Slot",
+            "type": "select",
+            "required": false,
+            "options": [
+              "Morning",
+              "Afternoon",
+              "Evening"
+            ]
+          }
+        ]
+      },
+      "additional": {
+        "title": "Additional Information",
+        "fields": [
+          {
+            "name": "notes",
+            "label": "Notes / Special Instructions",
+            "type": "textarea",
+            "placeholder": "Example: access instructions, parking info, business hours.",
+            "required": false
+          }
+        ]
+      },
+      "consent": {
+        "name": "privacyConsent",
+        "label": "I agree to the Privacy Policy",
+        "type": "checkbox",
+        "required": true
+      },
+      "submit": {
+        "text": "Book Site Visit"
+      }
+    }
+  },
+  "quoteRequest": {
+    "title": "Request a Free Quote",
+    "intro": "Tell us about your requirements and our team will provide a tailored quote.",
+    "fields": {
+      "contactInfo": {
+        "title": "Contact Information",
+        "fields": [
+          {
+            "name": "fullName",
+            "label": "Full Name",
+            "type": "text",
+            "required": true
+          },
+          {
+            "name": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": true
+          },
+          {
+            "name": "phone",
+            "label": "Phone Number",
+            "type": "tel",
+            "required": true
+          }
+        ]
+      },
+      "propertyInfo": {
+        "title": "Property Information",
+        "fields": [
+          {
+            "name": "propertyType",
+            "label": "Property Type",
+            "type": "select",
+            "required": true,
+            "options": [
+              "Home / Residential",
+              "Business / Commercial"
+            ]
+          },
+          {
+            "name": "postcode",
+            "label": "Postcode",
+            "type": "text",
+            "required": true,
+            "placeholder": "Used for service area confirmation"
+          }
+        ]
+      },
+      "serviceSelection": {
+        "title": "Service Selection",
+        "name": "services",
+        "type": "checkbox",
+        "options": [
+          "CCTV Systems",
+          "Alarm Systems",
+          "Access Control",
+          "Audio & Visual Systems"
+        ]
+      },
+      "projectDetails": {
+        "title": "Project Details",
+        "fields": [
+          {
+            "name": "message",
+            "label": "Message / Project Description",
+            "type": "textarea",
+            "placeholder": "Briefly describe your requirements or concerns…",
+            "required": false
+          },
+          {
+            "name": "budgetRange",
+            "label": "Budget Range",
+            "type": "select",
+            "required": false,
+            "options": [
+              "Under £1,000",
+              "£1,000 - £5,000",
+              "£5,000 - £10,000",
+              "£10,000 - £25,000",
+              "£25,000+",
+              "Not sure"
+            ]
+          },
+          {
+            "name": "preferredContact",
+            "label": "Preferred Contact Method",
+            "type": "select",
+            "required": false,
+            "options": [
+              "Call",
+              "Email"
+            ]
+          },
+          {
+            "name": "fileUpload",
+            "label": "File Upload (site photos or plans)",
+            "type": "file",
+            "required": false
+          }
+        ]
+      },
+      "consent": {
+        "name": "privacyConsent",
+        "label": "I agree to the Privacy Policy and consent to being contacted.",
+        "type": "checkbox",
+        "required": true
+      },
+      "submit": {
+        "text": "Request Quote"
+      }
+    }
+  }
+}
+
