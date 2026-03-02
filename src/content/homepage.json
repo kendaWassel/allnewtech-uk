@@ -86,11 +86,11 @@
     "buttons": [
       {
         "text": "Request a Free Site Survey",
-        "link": "/contact"
+        "link": "/site-visit"
       },
       {
         "text": "Get a Custom Quote",
-        "link": "/contact"
+        "link": "/custom-quote"
       }
     ]
   }

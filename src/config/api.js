@@ -10,9 +10,15 @@ export const apiConfig = {
     latestNews: '/api/latest-news',
     companies: '/api/companies',
     projects: '/api/projects/simple',
+    portfolioProjects: '/api/projects',
     services: '/api/services',
+    contactForm: '/api/contact-us-form-data',
+    contactSubmit: '/api/contact-us',
+    locations: '/api/locations',
+    siteVisitForm: '/api/book-a-site-visit-form-data',
+    siteVisitSubmit: '/api/book-a-site-visit',
   },
-  timeout: 10000, // 10 seconds
+  timeout: 10000,
 };
 
 /**
@@ -22,6 +28,18 @@ export const apiConfig = {
  */
 export const getApiUrl = (endpoint) => {
   return `${apiConfig.baseURL}${endpoint}`;
+};
+
+/**
+ * Build full image URL from API response (handles relative paths)
+ * @param {string} path - Image path from API (relative or absolute)
+ * @returns {string} Full URL for Next.js Image
+ */
+export const getImageUrl = (path) => {
+  if (!path || typeof path !== 'string') return '';
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  const base = apiConfig.baseURL.replace(/\/$/, '');
+  return `${base}${path.startsWith('/') ? '' : '/'}${path}`;
 };
 
 /**
@@ -69,4 +87,3 @@ export const fetchFromAPI = async (endpoint, options = {}) => {
     throw error;
   }
 };
-

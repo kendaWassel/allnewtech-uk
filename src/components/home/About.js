@@ -1,10 +1,11 @@
 import home from '@/content/homepage'
 import Image from 'next/image'
 import Brands from './Brands'
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
 
 const About = async () => {
     let companies = [];
+    let error = null;
 
     try {
         const url = getApiUrl(apiConfig.endpoints.companies);
@@ -30,12 +31,12 @@ const About = async () => {
             .map((company) => ({
                 id: company.id,
                 name: company.name || '',
-                logo: company.logo || '',
+                logo: getImageUrl(company.logo || ''),
                 priority: company.priority || 999,
             }))
             .sort((a, b) => a.priority - b.priority);
     } catch (err) {
-        console.error('Error loading companies:', err);
+        error = err.message || 'Failed to load companies. Please try again later.';
         companies = [];
     }
 
@@ -53,7 +54,12 @@ const About = async () => {
                 <div className='lg:block hidden w-[32%] lg:text-start text-center'>
                     <h2 className='font-bold text-[2rem] lg:block hidden'>{home.trustedBy.title}</h2>
                     {/* brands  */}
-                    {firstFourCompanies.length === 0 ? (
+                    {error ? (
+                        <div className='mt-[2rem]'>
+                            <p className='text-red-600 text-sm mb-1'>Unable to load companies</p>
+                            <p className='text-gray-600 text-xs'>{error}</p>
+                        </div>
+                    ) : firstFourCompanies.length === 0 ? (
                         <p className='mt-[2rem] text-gray-600 text-sm'>No companies available.</p>
                     ) : (
                         <>
@@ -67,7 +73,6 @@ const About = async () => {
                                                 fill
                                                 className="object-contain"
                                                 sizes="110px"
-                                                unoptimized
                                             />
                                         </div>
                                     ))}
@@ -83,7 +88,6 @@ const About = async () => {
                                                 fill
                                                 className="object-contain"
                                                 sizes="137px"
-                                                unoptimized
                                             />
                                         </div>
                                     ))}
@@ -94,7 +98,7 @@ const About = async () => {
                 </div>
                 <div>
                 <h2 className='lg:hidden sr-only'>Trusted By</h2>
-                <Brands className="lg:hidden" companies={firstFourCompanies} />
+                <Brands className="lg:hidden" companies={error ? null : firstFourCompanies} />
                 </div>
             </div>
         </section>

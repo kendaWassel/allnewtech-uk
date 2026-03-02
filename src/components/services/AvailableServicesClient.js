@@ -140,14 +140,17 @@ const AvailableServicesClient = ({ services, propertyType = 'home', error = null
               className="scroll-mt-[100px] flex flex-col items-start gap-[3rem] md:gap-[4rem]"
             >
               <div className="xl:ml-[8rem] md:ml-[4rem] mx-[auto] w-full sm:w-[21.9rem] md:w-[70%] xl:w-[49.2rem] h-[8.6rem] md:h-[12rem] xl:h-[19.2rem] flex-shrink-0">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  width={308}
-                  height={788}
-                  className="w-full h-full object-cover"
-                  unoptimized
-                />
+                {service.image ? (
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    width={308}
+                    height={788}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200" />
+                )}
               </div>
 
               <div className="flex-1">

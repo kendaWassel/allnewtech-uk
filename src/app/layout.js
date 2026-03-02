@@ -12,7 +12,7 @@ export const metadata = {
   metadataBase: new URL(siteConfig.baseUrl),
   title: {
     default: "All New Tech - UK Security & Smart Technology Solutions",
-    template: "%s",
+    template: "%s | All New Tech",
   },
   description:
     "Trusted UK-based security and technology solutions provider. Professional CCTV systems, alarm systems, access control, and smart automation for homes and businesses.",

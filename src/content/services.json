@@ -25,11 +25,11 @@
   "cta": {
     "primary": {
       "text": "Request a Free Site Survey",
-      "link": "/contact"
+      "link": "/site-visit"
     },
     "secondary": {
       "text": "Get a Custom Quote",
-      "link": "/contact"
+      "link": "/custom-quote"
     }
   }
 }

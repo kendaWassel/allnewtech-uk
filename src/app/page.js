@@ -12,9 +12,12 @@ import Projects from "@/components/home/Projects";
 import ProjectsLoading from "@/components/home/ProjectsLoading";
 import Testimonials from "@/components/home/Testimonials";
 import TestimonialsLoading from "@/components/home/TestimonialsLoading";
+import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Home",
+  title: {
+    absolute: "All New Tech | CCTV, Alarm & Smart Security Systems"
+  },
   description:
     "All New Tech is a UK-based security and technology solutions provider specialising in CCTV systems, alarm systems, access control, and smart automation for residential and commercial properties.",
   keywords: [
@@ -31,10 +34,10 @@ export const metadata = {
     title: "Trusted Security & Smart Technology Solutions for Homes and Businesses",
     description:
       "Protecting What Matters Most with Intelligent Surveillance, Smart Automation & Professional Installations",
-    url: "https://allnewtech-uk.com",
+    url: siteConfig.baseUrl,
   },
   alternates: {
-    canonical: "https://allnewtech-uk.com",
+    canonical: siteConfig.baseUrl,
   },
 };
 

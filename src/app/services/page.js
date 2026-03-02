@@ -2,7 +2,8 @@ import CTA from "@/components/home/CTA";
 import Hero from "@/components/layout/Hero";
 import Intro from "@/components/layout/Intro";
 import Categories from "@/components/services/Categories";
-import services from '@/content/services'
+import services from "@/content/services";
+import { siteConfig } from "@/config/site";
 
 export const metadata = {
   title: "Services",
@@ -19,13 +20,13 @@ export const metadata = {
     "security solutions",
   ],
   openGraph: {
-    title: "Our Services | All New Tech - Security & Technology Solutions UK",
+    title: "Our Services | Security & Technology Solutions UK",
     description:
       "Advanced Security & Technology Solutions for Homes and Businesses. Integrated security and smart technology systems designed to protect, control, and enhance properties.",
-    url: "https://allnewtech-uk.com/services",
+    url: `${siteConfig.baseUrl}/services`,
   },
   alternates: {
-    canonical: "https://allnewtech-uk.com/services",
+    canonical: `${siteConfig.baseUrl}/services`,
   },
 };
 

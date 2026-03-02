@@ -54,31 +54,44 @@ const TestimonialsCarousel = ({ testimonials }) => {
           prevEl: '.swiper-button-prev-custom',
         }}
         aria-roledescription="carousel"
-        aria-label="Testimonials carousel"
+        aria-label="Customer testimonials"
         className="w-full h-full !z-[110]"
       >
         {testimonials.map((testimonial) => (
-          <SwiperSlide key={testimonial.id}>
-            <div className="lg:px-[var(--inline-padding)] px-[var(--small-padding)] flex items-center relative z-100 h-full">
+          <SwiperSlide key={testimonial.id} role="group" aria-roledescription="slide" aria-label="Customer testimonial">
+            <article
+              itemScope
+              itemType="https://schema.org/Review"
+              className="lg:px-[var(--inline-padding)] px-[var(--small-padding)] flex items-center relative z-100 h-full"
+              aria-live="polite"
+            >
               <div className="absolute xl:w-[30rem] xl:h-[30rem] lg:w-[25rem] lg:h-[25rem] md:w-[20rem] md:h-[20rem] sm:w-[10rem] sm:h-[10rem] w-[6rem] h-[6rem] bg-white lg:left-[10%] sm:left-[3rem] left-[2rem] rounded-full flex items-center justify-center overflow-hidden">
                 <User imageUrl={testimonial.image} alt="Customer testimonial" />
               </div>
-              {/* empty div  */}
-              <div className='md:flex-1 sm:flex-3 flex-2'>
-              </div>
+              <div className="md:flex-1 sm:flex-3 flex-2" aria-hidden="true" />
               <div className="md:flex-1 sm:flex-5 flex-3">
-                <div className="flex lg:gap-3 gap-1 lg:mb-[2rem] md:mb-[1rem] mb-[0.5rem] lg:mt-[3rem] md:mt-0 mt-[1.5rem]" itemProp="reviewRating" itemScope itemType="https://schema.org/Rating">
-                  <meta itemProp="ratingValue" content={testimonial.rating} />
+                <div
+                  className="flex lg:gap-3 gap-1 lg:mb-[2rem] md:mb-[1rem] mb-[0.5rem] lg:mt-[3rem] md:mt-0 mt-[1.5rem]"
+                  itemProp="reviewRating"
+                  itemScope
+                  itemType="https://schema.org/Rating"
+                  role="img"
+                  aria-label={`Rating: ${testimonial.rating} out of 5 stars`}
+                >
+                  <meta itemProp="ratingValue" content={String(testimonial.rating)} />
                   <meta itemProp="bestRating" content="5" />
                   {renderStars(testimonial.rating)}
                 </div>
-                <div className='md:w-[75%] w-[95%]'>
+                <div className="md:w-[75%] w-[95%]">
                   <p className="text-white lg:text-2xl md:text-[1rem] text-[0.75rem] leading-[1.2] mb-6" itemProp="reviewBody">
                     {testimonial.text}
                   </p>
                 </div>
+                <span itemProp="author" itemScope itemType="https://schema.org/Person" className="sr-only">
+                  <span itemProp="name">Customer</span>
+                </span>
               </div>
-            </div>
+            </article>
           </SwiperSlide>
         ))}
       </Swiper>

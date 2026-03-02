@@ -25,7 +25,6 @@ const DiscoverSection = ({ propertyType = 'home' }) => {
             width={400}
             height={465}
             className="relative w-[8rem] sm:w-[15rem] md:w-[19rem] lg:w-[25rem] h-full object-cover rounded-r-[50%]"
-            unoptimized
           />
         </div>
 

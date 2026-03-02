@@ -4,29 +4,31 @@
     "subtitle": "Contact us for a free consultation or site visit"
   },
   "siteVisit": {
-    "title": "Book a Site Visit",
+    "title": "Contact Information",
     "intro": "Schedule a professional site assessment with one of our specialists.",
     "fields": {
       "contactInfo": {
         "title": "Contact Information",
         "fields": [
           {
-            "name": "fullName",
-            "label": "Full Name",
-            "type": "text",
-            "required": true
+            "name": "firstName",
+            "label": "First Name",
+            "type": "text"
+          },
+          {
+            "name": "lastName",
+            "label": "Last Name",
+            "type": "text"
           },
           {
             "name": "email",
-            "label": "Email Address",
-            "type": "email",
-            "required": true
+            "label": "Email",
+            "type": "email"
           },
           {
             "name": "phone",
-            "label": "Phone Number",
-            "type": "tel",
-            "required": true
+            "label": "Phone",
+            "type": "tel"
           }
         ]
       },
@@ -36,31 +38,24 @@
           {
             "name": "propertyType",
             "label": "Property Type",
-            "type": "select",
-            "required": true,
-            "options": [
-              "Home / Residential",
-              "Business / Commercial"
-            ]
+            "type": "select"
+          },
+          {
+            "name": "postcode",
+            "label": "Post Code",
+            "type": "text"
           },
           {
             "name": "address",
-            "label": "Address / Postcode",
-            "type": "text",
-            "required": true
+            "label": "Address",
+            "type": "text"
           }
         ]
       },
       "services": {
-        "title": "Services of Interest",
+        "title": "Select Services",
         "name": "services",
-        "type": "checkbox",
-        "options": [
-          "CCTV",
-          "Alarm System",
-          "Access Control",
-          "Audio & Visual"
-        ]
+        "type": "checkbox"
       },
       "timing": {
         "title": "Preferred Visit Timing",
@@ -68,19 +63,12 @@
           {
             "name": "preferredDate",
             "label": "Preferred Date",
-            "type": "date",
-            "required": false
+            "type": "date"  
           },
           {
             "name": "preferredTime",
-            "label": "Preferred Time Slot",
-            "type": "select",
-            "required": false,
-            "options": [
-              "Morning",
-              "Afternoon",
-              "Evening"
-            ]
+            "label": "Preferred Time",
+            "type": "select"
           }
         ]
       },
@@ -91,16 +79,16 @@
             "name": "notes",
             "label": "Notes / Special Instructions",
             "type": "textarea",
-            "placeholder": "Example: access instructions, parking info, business hours.",
-            "required": false
+            "placeholder": "Example: access instructions, parking info, business hours."
+            
           }
         ]
       },
       "consent": {
         "name": "privacyConsent",
-        "label": "I agree to the Privacy Policy",
-        "type": "checkbox",
-        "required": true
+        "label": "I agree to the Privacy Policy and consent to being contacted.",
+        "type": "checkbox"
+        
       },
       "submit": {
         "text": "Book Site Visit"
@@ -108,112 +96,80 @@
     }
   },
   "quoteRequest": {
-    "title": "Request a Free Quote",
+    "title": "Contact Information",
     "intro": "Tell us about your requirements and our team will provide a tailored quote.",
     "fields": {
       "contactInfo": {
-        "title": "Contact Information",
         "fields": [
           {
-            "name": "fullName",
-            "label": "Full Name",
-            "type": "text",
-            "required": true
+            "name": "firstName",
+            "label": "First Name",
+            "type": "text"
+          },
+          {
+            "name": "lastName",
+            "label": "Last Name",
+            "type": "text"
           },
           {
             "name": "email",
-            "label": "Email Address",
-            "type": "email",
-            "required": true
+            "label": "Email",
+            "type": "email"
           },
           {
             "name": "phone",
-            "label": "Phone Number",
-            "type": "tel",
-            "required": true
+            "label": "Phone",
+            "type": "tel"
           }
         ]
       },
-      "propertyInfo": {
-        "title": "Property Information",
+      "siteDetails": {
+        "title": "Site Details",
         "fields": [
           {
             "name": "propertyType",
             "label": "Property Type",
-            "type": "select",
-            "required": true,
-            "options": [
-              "Home / Residential",
-              "Business / Commercial"
-            ]
+            "type": "select"
           },
           {
             "name": "postcode",
-            "label": "Postcode",
-            "type": "text",
-            "required": true,
-            "placeholder": "Used for service area confirmation"
+            "label": "Post Code",
+            "type": "text"
           }
         ]
       },
-      "serviceSelection": {
-        "title": "Service Selection",
+      "services": {
+        "title": "Select Services",
         "name": "services",
-        "type": "checkbox",
-        "options": [
-          "CCTV Systems",
-          "Alarm Systems",
-          "Access Control",
-          "Audio & Visual Systems"
-        ]
+        "type": "checkbox"
       },
-      "projectDetails": {
-        "title": "Project Details",
+      "additional": {
         "fields": [
           {
             "name": "message",
-            "label": "Message / Project Description",
             "type": "textarea",
-            "placeholder": "Briefly describe your requirements or concerns…",
-            "required": false
+            "placeholder": "Briefly describe your requirements or concerns…"
           },
           {
             "name": "budgetRange",
             "label": "Budget Range",
-            "type": "select",
-            "required": false,
-            "options": [
-              "Under £1,000",
-              "£1,000 - £5,000",
-              "£5,000 - £10,000",
-              "£10,000 - £25,000",
-              "£25,000+",
-              "Not sure"
-            ]
+            "type": "select"
           },
           {
             "name": "preferredContact",
             "label": "Preferred Contact Method",
-            "type": "select",
-            "required": false,
-            "options": [
-              "Call",
-              "Email"
-            ]
+            "type": "select"
           },
           {
             "name": "fileUpload",
-            "label": "File Upload (site photos or plans)",
-            "type": "file",
-            "required": false
+            "type": "file"
           }
         ]
       },
       "consent": {
         "name": "privacyConsent",
         "label": "I agree to the Privacy Policy and consent to being contacted.",
-        "type": "checkbox",
-        "required": true
+        "type": "checkbox"
       },
       "submit": {
         "text": "Request Quote"

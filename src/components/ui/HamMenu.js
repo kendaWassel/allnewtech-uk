@@ -9,7 +9,6 @@ const HamMenu = () => {
 
   return (
     <>
-              {/* Ham menu */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 p-2"
@@ -17,21 +16,16 @@ const HamMenu = () => {
           aria-expanded={isMenuOpen}
         >
           <Image src="/icons/ham-menu.svg" alt="menu icon" width={19} height={14}/>
-        </button>
-        
-        {/* Mobile Menu Overlay - Dims background */}
+        </button>        
         {isMenuOpen && (
           <div 
             className="lg:hidden fixed inset-0 bg-black opacity-50 z-999"
             onClick={() => setIsMenuOpen(false)}
           ></div>
         )}
-        
-        {/* Mobile Side Panel Menu */}
         <div className={`lg:hidden fixed top-0 left-0 h-full w-2/3 bg-[var(--secondary)] z-1000 transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
-          {/* Close Button */}
           <button
             onClick={() => setIsMenuOpen(false)}
             className="absolute top-[3rem] right-[1.5rem]"
@@ -46,8 +40,8 @@ const HamMenu = () => {
               { href: "/", label: "Home" },
               { href: "/about", label: "About Us" },
               { href: "/services", label: "Services" },
-              { href: "/portfolio", label: "Projects" },
-              { href: "/contact", label: "Contact Us" },
+              { href: "/projects", label: "Projects" },
+              { href: "/contact-us", label: "Contact Us" },
             ].map((item, index) => (
               <Link
                 key={item.href}

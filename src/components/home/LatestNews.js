@@ -1,9 +1,10 @@
 import CTAButton from "../ui/CTAButton"
 import Image from "next/image"
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
 
 const LatestNews = async () => {
     let news = [];
+    let error = null;
 
     try {
         const url = getApiUrl(apiConfig.endpoints.latestNews);
@@ -35,15 +36,15 @@ const LatestNews = async () => {
                 title: item.title || '',
                 description: truncatedContent,
                 cta: "Read More",
-                src: item.image || '',
+                src: getImageUrl(item.image || ''),
                 imageAlt: item.title || 'News article image',
+                link: `/latest-news/${item.id}`,
                 createdAt: item.created_at,
                 updatedAt: item.updated_at,
             };
         });
     } catch (err) {
-        console.error('Error loading latest news:', err);
-        // Silently fail - return empty array
+        error = err.message || 'Failed to load news. Please try again later.';
         news = [];
     }
 
@@ -51,7 +52,18 @@ const LatestNews = async () => {
         <section className="lg:px-[var(--inline-padding)] px-[var(--small-padding)] lg:py-[5rem] py-[5rem]">
             <h2 className="font-bold lg:text-5xl text-2xl lg:text-start text-center">Latest News</h2>
             <div className="lg:border-l-[4px] lg:border-[var(--secondary)] lg:mt-[3rem] mt-[1rem] lg:ms-[3rem] lg:ps-[4.5rem] lg:py-[1rem]">
-                {news.length === 0 ? (
+                {error ? (
+                    <div className="flex items-center justify-center py-8">
+                        <div className="text-center">
+                            <p className="lg:text-xl md:text-lg text-base text-red-600 mb-2">
+                                Unable to load news
+                            </p>
+                            <p className="lg:text-lg md:text-base text-sm text-gray-600">
+                                Try again!
+                            </p>
+                        </div>
+                    </div>
+                ) : news.length === 0 ? (
                     <div className="flex items-center justify-center py-8">
                         <p className="text-center lg:text-xl md:text-lg text-base text-gray-600">
                             No news available at the moment. Check back soon!
@@ -63,7 +75,7 @@ const LatestNews = async () => {
                         <div className="flex-4 lg:order-1 order-2 flex flex-col lg:items-start items-center lg:text-start text-center lg:pt-[1rem]">
                             <h4 className="font-bold lg:text-2xl lg:px-0 px-[3rem]">{item.title}</h4>
                             <p className="lg:text-2xl my-[1rem] lg:w-[90%] lg:px-0 px-[var(--small-padding)] leading-[1.2]">{item.description}</p>
-                            <CTAButton title={item.cta} link="/" color="blue" className="lg:text-[1rem] text-[0.75rem]" />
+                            <CTAButton title={item.cta} link={item.link} color="blue" className="lg:text-[1rem] text-[0.75rem]" />
                         </div>
                         <div className="sm:p-0 relative w-[376px] h-[221px] lg:w-[376px] lg:h-[221px] md:w-[300px] md:h-[176px] sm:w-[250px] sm:h-[147px] w-full aspect-[376/221]">
                             <Image 
@@ -72,7 +84,6 @@ const LatestNews = async () => {
                                 fill
                                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 250px, (max-width: 1024px) 300px, 376px"
                                 className="object-cover rounded"
-                                unoptimized
                             />
                         </div>
                     </div>

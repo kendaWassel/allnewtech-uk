@@ -45,13 +45,13 @@ const Footer = () => {
               <h4 className="text-white font-bold mb-4">Start Your Project Today</h4>
               <div className="flex flex-col gap-2">
                 <Link 
-                  href="/contact" 
+                  href="/contact-us" 
                   className="text-white hover:text-blue-400 transition-colors"
                 >
                   Request a Site Survey
                 </Link>
                 <Link 
-                  href="/contact" 
+                  href="/custom-quote" 
                   className="text-white hover:text-blue-400 transition-colors"
                 >
                   Get a Free Custom Quote
@@ -74,13 +74,13 @@ const Footer = () => {
                   Services
                 </Link>
                 <Link 
-                  href="/portfolio" 
+                  href="/projects" 
                   className="text-white hover:text-blue-400 transition-colors"
                 >
                   Projects
                 </Link>
                 <Link 
-                  href="/contact" 
+                  href="/contact-us" 
                   className="text-white hover:text-blue-400 transition-colors"
                 >
                   Contact Us

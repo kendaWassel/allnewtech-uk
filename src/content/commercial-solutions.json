@@ -54,11 +54,11 @@
     "buttons": [
       {
         "text": "Request a Quote",
-        "link": "/contact"
+        "link": "/custom-quote"
       },
       {
         "text": "Book a Site Visit",
-        "link": "/contact"
+        "link": "/site-visit"
       }
     ]
   },

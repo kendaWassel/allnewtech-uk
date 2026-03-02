@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
 
 const Brands = async ({ className = "", companies: providedCompanies = null }) => {
   let companies = [];
+  let error = null;
 
   // If companies are provided (from About section), use them
   // Otherwise, fetch and skip first 4
@@ -33,7 +34,7 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
         .map((company) => ({
           id: company.id,
           name: company.name || '',
-          logo: company.logo || '',
+          logo: getImageUrl(company.logo || ''),
           priority: company.priority || 999,
         }))
         .sort((a, b) => a.priority - b.priority);
@@ -41,7 +42,7 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
       // Skip first 4 companies (they're shown in About section)
       companies = allCompanies.slice(4);
     } catch (err) {
-      console.error('Error loading companies:', err);
+      error = err.message || 'Failed to load brands. Please try again later.';
       companies = [];
     }
   }
@@ -50,7 +51,18 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
     <section className={`py-[3rem] ${className}`}>
       <h2 className="sr-only">Trusted Security Technology Brands</h2>
 
-      {companies.length === 0 ? (
+      {error ? (
+        <div className="flex items-center justify-center bg-[#F2F3F4] sm:h-[170px] h-[70px]">
+          <div className="text-center">
+            <p className="text-red-600 text-sm sm:text-base px-4 mb-1">
+              Unable to load brands
+            </p>
+            <p className="text-gray-600 text-xs sm:text-sm px-4">
+              Try again!
+            </p>
+          </div>
+        </div>
+      ) : companies.length === 0 ? (
         <div className="flex items-center justify-center bg-[#F2F3F4] sm:h-[170px] h-[70px]">
           <p className="text-center text-gray-600 text-sm sm:text-base px-4">
             No brands available at the moment.
@@ -73,7 +85,6 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
                 fill
                 className="object-contain"
                 sizes="(max-width: 640px) 70px, (max-width: 768px) 100px, 140px"
-                unoptimized
               />
             </li>
           ))}

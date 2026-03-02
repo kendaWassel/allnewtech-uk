@@ -4,8 +4,9 @@ import Intro from "@/components/layout/Intro";
 import AvailableServices from "@/components/services/AvailableServices";
 import AvailableServicesLoading from "@/components/services/AvailableServicesLoading";
 import DiscoverSection from "@/components/services/DiscoverSection";
-import CTAButton from "@/components/ui/CTAButton";
-import homeSolutions from '@/content/home-solutions'
+import homeSolutions from "@/content/home-solutions";
+import { siteConfig } from "@/config/site";
+
 export const metadata = {
   title: "Home Solutions",
   description:
@@ -21,13 +22,13 @@ export const metadata = {
     "smart home technology",
   ],
   openGraph: {
-    title: "Home Solutions | All New Tech UK",
+    title: "Home Solutions",
     description:
       "Protect your home with intelligent systems designed for modern living. Advanced home security and audio-visual solutions that provide peace of mind, control, and convenience.",
-    url: "https://allnewtech-uk.com/services/home-solutions",
+    url: `${siteConfig.baseUrl}/services/home-solutions`,
   },
   alternates: {
-    canonical: "https://allnewtech-uk.com/services/home-solutions",
+    canonical: `${siteConfig.baseUrl}/services/home-solutions`,
   },
 };
 

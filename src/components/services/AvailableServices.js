@@ -1,5 +1,5 @@
 
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
 import AvailableServicesClient from './AvailableServicesClient';
 
 const AvailableServices = async ({ propertyType = 'home' }) => {
@@ -30,7 +30,7 @@ const AvailableServices = async ({ propertyType = 'home' }) => {
       description: service.description || '',
       features: service.advantages?.map((advantage) => advantage.item) || [],
       property_type: service.property_type,
-      image: service.image || null,
+      image: getImageUrl(service.image || '') || null,
       createdAt: service.created_at,
       updatedAt: service.updated_at,
     }));
@@ -39,7 +39,6 @@ const AvailableServices = async ({ propertyType = 'home' }) => {
       service.property_type === propertyType
     );
   } catch (err) {
-    console.error('Error loading services:', err);
     error = err.message || 'Failed to load services. Please try again later.';
     services = [];
   }

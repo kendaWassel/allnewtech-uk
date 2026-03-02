@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import SearchButton from "../ui/SearchButton";
 import HamMenu from "../ui/HamMenu";
 import { useState } from "react";
 
@@ -16,14 +15,13 @@ const Header = () => {
           <Image src="/Logo-light.svg" alt="All New Tech Logo" fill className="object-cover p-2 lg:p-4" />
         </Link>
 
-        {/* Desktop navigation */}
         <nav aria-label="Main navigation" className="hidden lg:flex absolute left-1/2 -translate-x-1/2">
           <ul className="flex items-center xl:gap-[4.5rem] gap-[1rem]">
             {[
               { href: "/about", label: "About Us" },
               { href: "/services", label: "Services", hasDropdown: true },
-              { href: "/portfolio", label: "Projects" },
-              { href: "/contact", label: "Contact Us" },
+              { href: "/projects", label: "Projects" },
+              { href: "/contact-us", label: "Contact Us" },
             ].map((item) => (
               <li 
                 key={item.href}
@@ -65,10 +63,6 @@ const Header = () => {
             ))}
           </ul>
         </nav>
-
-        <div className="hidden lg:block relative ml-auto">
-          <SearchButton />
-        </div>
 
         <HamMenu />
       </div>

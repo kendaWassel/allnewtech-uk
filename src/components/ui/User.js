@@ -10,7 +10,6 @@ const User = ({ imageUrl, alt = "User avatar" }) => {
           fill
           sizes="(max-width: 640px) 90px, (max-width: 768px) 130px, (max-width: 1024px) 18rem, 120px"
           className="object-cover rounded-full"
-          unoptimized
         />
       </div>
     );

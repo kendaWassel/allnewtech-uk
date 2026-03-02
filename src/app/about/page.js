@@ -2,6 +2,7 @@ import ChooseUs from "@/components/aboutUs/ChooseUs";
 import Mission from "@/components/aboutUs/Mission";
 import WhoWeAre from "@/components/aboutUs/WhoWeAre";
 import CTA from "@/components/home/CTA";
+import { siteConfig } from "@/config/site";
 
 export const metadata = {
   title: "About Us",
@@ -16,13 +17,13 @@ export const metadata = {
     "security professionals",
   ],
   openGraph: {
-    title: "About Us | All New Tech - UK Security & Technology Solutions",
+    title: "About Us | UK Security & Technology Solutions",
     description:
       "With years of industry experience, All New Tech has become a trusted partner for individuals and businesses seeking modern security systems and smart automation installation.",
-    url: "https://allnewtech-uk.com/about",
+    url: `${siteConfig.baseUrl}/about`,
   },
   alternates: {
-    canonical: "https://allnewtech-uk.com/about",
+    canonical: `${siteConfig.baseUrl}/about`,
   },
 };
 
