@@ -5,6 +5,16 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { apiConfig, getApiUrl } from '@/config/api';
 
+const validateContactForm = (formData) => {
+  if (!formData.firstName.trim()) return 'First name is required.';
+  if (!formData.lastName.trim()) return 'Last name is required.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
+  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
+  if (!formData.serviceInterest) return 'Please select a service.';
+  if (!formData.propertyType) return 'Please select a property type.';
+  return '';
+};
+
 function useIsLargeScreen() {
   const subscribe = (callback) => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -30,6 +40,7 @@ const ContactFormFields = ({
   services,
   propertyTypes,
   handleChange,
+  handlePhoneChange,
   handleSubmit,
   isSubmitting,
 }) => (
@@ -78,7 +89,7 @@ const ContactFormFields = ({
         name="phone"
         placeholder="Phone"
         value={formData.phone}
-        onChange={handleChange}
+        onChange={handlePhoneChange}
         className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
         required
       />
@@ -170,6 +181,7 @@ const MapBlock = ({ locations = [] }) => (
 );
 
 const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], error = null }) => {
+  console.log('ContactFormClient props:', { services, propertyTypes, locations, error });
   const isLargeScreen = useIsLargeScreen();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -191,11 +203,21 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
       [name]: value,
     }));
   };
-
+const handlePhoneChange = (e) => {
+  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
+  setFormData((prev) => ({ ...prev, phone: value }));
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError('');
     setSubmitSuccess('');
+
+    const validationError = validateContactForm(formData);
+  if (validationError) {
+    setSubmitError(validationError);
+    return;
+  }
+
     setIsSubmitting(true);
 
     try {
@@ -244,7 +266,6 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
     }
   };
 
-  // Show message if data failed to load or is unavailable
   if (services.length === 0 || propertyTypes.length === 0) {
     const message = error
       ? 'Unable to load contact form right now. Please try again later.'
@@ -313,6 +334,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             services={services}
             propertyTypes={propertyTypes}
             handleChange={handleChange}
+            handlePhoneChange={handlePhoneChange}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />
@@ -335,6 +357,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             services={services}
             propertyTypes={propertyTypes}
             handleChange={handleChange}
+            handlePhoneChange={handlePhoneChange}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />

@@ -109,22 +109,14 @@ const AvailableServicesClient = ({ services, propertyType = 'home', error = null
                 <button
                   key={service.id || index}
                   onClick={() => scrollToSection(index)}
-                  className={`cursor-pointer text-left py-3 transition relative ${
-                    activeSection === index
-                      ? ""
-                      : ""
-                  }`}
+                  className={`cursor-pointer text-left py-3 transition relative`}
                 >
                   <span className={`${activeSection === index ? "border-l-[5px] pl-2" : ""} text-xl font-bold text-[var(--secondary)]`}>{service.title}</span>
                 </button>
               ))}
               <button
                 onClick={scrollToCTA}
-                className={`cursor-pointer text-left py-3 transition-colors mt-4 relative ${
-                  activeSection === services.length
-                    ? ""
-                    : ""
-                }`}
+                className={`cursor-pointer text-left py-3 transition-colors mt-4 relative`}
               >
                 <span className={`${activeSection === services.length ? "border-l-[5px] pl-2" : ""} text-xl font-bold text-[var(--secondary)]`}>{homeSolutions.cta.title}</span>
               </button>
@@ -139,7 +131,7 @@ const AvailableServicesClient = ({ services, propertyType = 'home', error = null
               id={`service-${index}`} 
               className="scroll-mt-[100px] flex flex-col items-start gap-[3rem] md:gap-[4rem]"
             >
-              <div className="xl:ml-[8rem] md:ml-[4rem] mx-[auto] w-full sm:w-[21.9rem] md:w-[70%] xl:w-[49.2rem] h-[8.6rem] md:h-[12rem] xl:h-[19.2rem] flex-shrink-0">
+              <div className="xl:ml-[8rem] md:ml-[4rem] mx-[auto] w-full sm:w-[21.9rem] md:w-[70%] xl:w-[45.2rem] h-[8.6rem] md:h-[12rem] xl:h-[19.2rem] flex-shrink-0">
                 {service.image ? (
                   <Image
                     src={service.image}

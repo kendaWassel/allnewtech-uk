@@ -9,7 +9,6 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-1000">
-      <div className="lg:hidden w-full h-[26px] bg-[#434343]"></div>
       <div className="flex items-center justify-between lg:px-[var(--inline-padding)] pe-[1rem] py-4 w-full relative bg-[var(--white)] lg:h-[65px] h-[42px]">
         <Link href="/" className="absolute left-[var(--small-padding)] lg:left-[var(--inline-padding)] top-0 w-[95px] sm:w-[180px] lg:w-[230px] h-[42px] sm:h-[65px] lg:h-[90px] bg-[var(--secondary)] flex items-center z-10">
           <Image src="/Logo-light.svg" alt="All New Tech Logo" fill className="object-cover p-2 lg:p-4" />
@@ -41,7 +40,7 @@ const Header = () => {
                     onMouseEnter={() => setIsServicesHovered(true)}
                     onMouseLeave={() => setIsServicesHovered(false)}
                   >
-                    <div className="bg-[var(--primary-blue-first)] shadow-lg">
+                    <div className="bg-[#00b2e3] shadow-lg">
                       <div className="flex flex-col py-6 px-8 gap-6">
                         <Link
                           href="/services/home-solutions"

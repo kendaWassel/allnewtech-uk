@@ -1,19 +1,20 @@
 "use client";
 import Image from "next/image";
+import { getImageUrl } from "@/config/api";
 
 const LatestNewsBlogClient = ({ news }) => {
+  const imageSrc = getImageUrl(news?.image || "");
+
   return (
     <section className="">
         <div className="md:px-[var(--inline-padding)] md:pt-[6rem] w-full">
-            {news.image ? (
+            {imageSrc ? (
               <Image
-                src={news.image}
+                src={imageSrc}
                 alt="News image"
                 width={420}
                 height={160}
-                className="w-full h-[10rem] md:h-full object-cover"
-                sizes="(max-width: 768px) 100vw, 60vw"
-                unoptimized
+                className="w-full h-[160px] md:h-[500px] object-cover"
               />
             ) : (
               <div className="w-full h-full bg-gray-200" />

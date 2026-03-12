@@ -32,7 +32,7 @@ const validateQuoteForm = (formData) => {
   if (!formData.firstName.trim()) return 'First name is required.';
   if (!formData.lastName.trim()) return 'Last name is required.';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
-  if (!/^[0-9+()\-\s]{6,20}$/.test(formData.phone)) return 'Please enter a valid phone number.';
+if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
   if (!formData.propertyTypeId) return 'Please select a property type.';
   if (!formData.postCode.trim()) return 'Post code is required.';
   if (formData.serviceIds.length === 0) return 'Please select at least one service.';
@@ -108,84 +108,77 @@ const CustomQuoteClient = ({
       file,
     }));
   };
+const handlePhoneChange = (e) => {
+  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
+  setFormData((prev) => ({ ...prev, phone: value }));
+};
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError('');
-    setSubmitSuccess('');
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSubmitError('');
+  setSubmitSuccess('');
 
-    const validationError = validateQuoteForm(formData);
-    if (validationError) {
-      setSubmitError(validationError);
-      return;
+  const validationError = validateQuoteForm(formData);
+  if (validationError) {
+    setSubmitError(validationError);
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const payload = new FormData();
+    payload.append('first_name', formData.firstName);
+    payload.append('last_name', formData.lastName);
+    payload.append('email', formData.email);
+    payload.append('phone', formData.phone);
+    payload.append('post_code', formData.postCode);
+    payload.append('property_type_id', String(formData.propertyTypeId));
+    formData.serviceIds.forEach((id) => payload.append('services[]', String(id)));
+    payload.append('requirements', formData.requirements);
+    payload.append('preferred_contact_method_id', String(formData.preferredContactMethodId));
+    payload.append('budget_range_id', String(formData.budgetRangeId));
+    payload.append('confirmation', formData.confirmation ? '1' : '0');
+    if (formData.file) payload.append('file', formData.file);
+
+    const response = await fetch(getApiUrl('/api/request-for-a-quote/'), {
+      method: 'POST',
+      body: payload,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to submit form: ${response.status} ${response.statusText}`);
     }
 
-    setIsSubmitting(true);
+    const data = await response.json();
+    if (!data.success) throw new Error(data.msg || 'Failed to submit form');
 
-    try {
-      const payload = new FormData();
-      payload.append('first_name', formData.firstName);
-      payload.append('last_name', formData.lastName);
-      payload.append('email', formData.email);
-      payload.append('phone', formData.phone);
-      payload.append('post_code', formData.postCode);
-      payload.append('property_type_id', String(formData.propertyTypeId));
-      if (formData.serviceIds.length > 0) {
-        payload.append('service_id', String(formData.serviceIds[0]));
-        formData.serviceIds.forEach((id) => {
-          payload.append('service_id[]', String(id));
-        });
-      }
-      payload.append('requirements', formData.requirements);
-      payload.append('preferred_contact_method_id', String(formData.preferredContactMethodId));
-      payload.append('budget_range_id', String(formData.budgetRangeId));
-      payload.append('confirmation', formData.confirmation ? '1' : '0');
+    setSubmitSuccess(data.msg || 'Your quote request has been sent successfully.');
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      postCode: '',
+      propertyTypeId: '',
+      serviceIds: [],
+      requirements: '',
+      preferredContactMethodId: '',
+      budgetRangeId: '',
+      file: null,
+      confirmation: false,
+    });
 
-      if (formData.file) {
-        payload.append('file', formData.file);
-      }
+    const fileInput = e.target.querySelector('input[name="file"]');
+    if (fileInput) fileInput.value = '';
 
-      const response = await fetch(getApiUrl('/api/request-for-a-quote'), {
-        method: 'POST',
-        body: payload,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to submit form: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.msg || 'Failed to submit form');
-      }
-
-      setSubmitSuccess(data.msg || 'Your quote request has been sent successfully.');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        postCode: '',
-        propertyTypeId: '',
-        serviceIds: [],
-        requirements: '',
-        preferredContactMethodId: '',
-        budgetRangeId: '',
-        file: null,
-        confirmation: false,
-      });
-
-      const fileInput = e.target.querySelector('input[name="file"]');
-      if (fileInput) {
-        fileInput.value = '';
-      }
-    } catch (submitErr) {
-      setSubmitError(submitErr.message || 'Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  } catch (submitErr) {
+    setSubmitError(submitErr.message || 'Something went wrong. Please try again.');
+    console.error('Quote form submission error:', submitErr);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const isEmpty =
     formOptions.services.length === 0 ||
@@ -252,7 +245,7 @@ const CustomQuoteClient = ({
           name="phone"
           placeholder={phone}
           value={formData.phone}
-          onChange={handleChange}
+          onChange={handlePhoneChange}
           className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
           required
         />

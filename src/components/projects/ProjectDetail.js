@@ -26,14 +26,16 @@ const ProjectDetail = async ({ projectId }) => {
     const main = data.data.images?.main?.[0] || '';
     const secondary = data.data.images?.secondary || [];
     const other = data.data.images?.other || [];
+    const challenges = data.data.challenges.map((entry) => entry.item);
+    const solutions = data.data.solutions.map((entry) => entry.item);
     project = {
       id: data.data.id,
       title: data.data.title || '',
       description: data.data.description || '',
       service: data.data.service || '',
       propertyType: data.data.property_type || '',
-      challenges: data.data.challenges?.map((c) => c.item) || [],
-      solutions: data.data.solutions?.map((s) => s.item) || [],
+      challenges,
+      solutions,
       mainImage: getImageUrl(main),
       secondaryImages: secondary.map(getImageUrl).filter(Boolean),
       otherImages: other.map(getImageUrl).filter(Boolean),

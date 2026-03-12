@@ -71,7 +71,7 @@ const About = async () => {
                                                 src={company.logo} 
                                                 alt={`${company.name}-logo`} 
                                                 fill
-                                                className="object-contain"
+                                                className="object-contain brightness-0 opacity-40"
                                                 sizes="110px"
                                             />
                                         </div>
@@ -86,7 +86,7 @@ const About = async () => {
                                                 src={company.logo} 
                                                 alt={`${company.name}-logo`} 
                                                 fill
-                                                className="object-contain"
+                                                className="object-contain brightness-0 opacity-40"
                                                 sizes="137px"
                                             />
                                         </div>

@@ -83,7 +83,7 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
                 src={company.logo}
                 alt={`${company.name} security solutions partner`}
                 fill
-                className="object-contain"
+                className="object-contain brightness-0 opacity-40" 
                 sizes="(max-width: 640px) 70px, (max-width: 768px) 100px, 140px"
               />
             </li>

@@ -274,7 +274,7 @@ const ProjectDetailClient = ({ project }) => {
               <div className="flex-1 relative flex items-start">
                 {project.propertyType && (
                   <div className="w-[35px] h-[35px] md:w-[50px] md:h-[50px]">
-                    {project.propertyType === "home" ? (
+                    {project.propertyType === "Home" ? (
                       <Image
                         src="/projects/home-label.svg"
                         alt="Home Label"

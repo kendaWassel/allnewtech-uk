@@ -81,7 +81,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
             </button>
 
             {serviceMenuOpen && services.length > 0 && (
-              <div className="absolute z-20 mt-2 w-56 rounded-md border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-3 space-y-2">
+              <div className="absolute end-0 z-20 mt-2 w-56 rounded-md border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-3 space-y-2">
                 {services.map((service) => {
                   const checked = selectedServices.includes(service);
                   return (

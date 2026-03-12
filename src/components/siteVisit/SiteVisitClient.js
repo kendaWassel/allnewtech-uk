@@ -46,8 +46,8 @@ const validateSiteVisitForm = (formData) => {
   if (!formData.lastName.trim()) return "Last name is required.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
     return "Please enter a valid email address.";
-  if (!/^[0-9+()\-\s]{6,20}$/.test(formData.phone))
-    return "Please enter a valid phone number.";
+  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim()))
+        return "Please enter a valid phone number.";
   if (!formData.postCode.trim()) return "Post code is required.";
   if (formData.serviceIds.length === 0)
     return "Please select at least one service.";
@@ -55,11 +55,22 @@ const validateSiteVisitForm = (formData) => {
   if (!formData.preferredTimeId) return "Please select a preferred time.";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(formData.preferredDate))
     return "Preferred date must be in YYYY-MM-DD format.";
+  const today = new Date();
+today.setHours(0, 0, 0, 0);
+const selected = new Date(formData.preferredDate);
+if (selected < today) return 'Please select a future date.';
   if (!formData.address.trim()) return "Address is required.";
   if (!formData.confirmation) return "Please confirm the consent checkbox.";
   return "";
 };
-
+const handleDateChange = (e) => {
+  const value = e.target.value;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const selected = new Date(value);
+  if (selected < today) return;
+  setFormData((prev) => ({ ...prev, preferredDate: value }));
+};
 const EmptyState = ({ message }) => (
   <section className="lg:py-[6rem] pb-[3.75rem] xl:px-[15rem] lg:px-[7rem]">
     <div className="flex gap-[3rem] mb-[3rem]">
@@ -105,7 +116,10 @@ const SiteVisitClient = ({
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-
+const handlePhoneChange = (e) => {
+  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
+  setFormData((prev) => ({ ...prev, phone: value }));
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError("");
@@ -126,7 +140,7 @@ const SiteVisitClient = ({
         phone: formData.phone,
         post_code: formData.postCode,
         property_type_id: Number(formData.propertyTypeId),
-        service_id: Number(formData.serviceIds[0]),
+        services: formData.serviceIds.map(Number),
         preferred_time_id: Number(formData.preferredTimeId),
         address: formData.address,
         preferred_date: formData.preferredDate,
@@ -177,6 +191,7 @@ const SiteVisitClient = ({
       setSubmitError(
         submitErr.message || "Something went wrong. Please try again.",
       );
+      console.error("Site visit form submission error:", submitErr);
     } finally {
       setIsSubmitting(false);
     }
@@ -257,7 +272,7 @@ const SiteVisitClient = ({
               name="phone"
               placeholder={phoneLabel}
               value={formData.phone}
-              onChange={handleChange}
+              onChange={handlePhoneChange}
               className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
               required
             />
@@ -364,8 +379,9 @@ const SiteVisitClient = ({
               <input
                 type="date"
                 name="preferredDate"
+                min={new Date().toISOString().split('T')[0]}
                 value={formData.preferredDate}
-                onChange={handleChange}
+                onChange={handleDateChange}
                 aria-label={preferredDateLabel || "Preferred Date"}
                 className="w-full border-none outline-none text-[0.6rem] md:text-base date-placeholder"
                 required
