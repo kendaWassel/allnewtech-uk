@@ -1,7 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import { siteConfig } from "@/config/site";
 
 const Footer = () => {
+  const location = siteConfig.contact?.location || "";
+  const phoneDisplay = siteConfig.contact?.phoneE164;
+  const email = siteConfig.contact?.email || "";
+
   return (
     <footer className="w-full">
       <div className="bg-[var(--secondary)] text-white pt-12 pb-[6rem] sm:px-[var(--inline-padding)]">
@@ -17,11 +22,14 @@ const Footer = () => {
                 />
               </Link>
               <div className="flex flex-col gap-2 text-white lg:items-start items-center">
-                <p>Location - location</p>
-                <p>location</p>
-                <p>+999999999999</p>
-                <p>info@allnewtech.co.uk</p>
-              </div>
+              <address className="not-italic md:w-[70%] w-[80%] ">
+                <p className="lg:text-start text-center">
+                  Location - {location}
+                </p>
+              </address>
+              <p>{phoneDisplay}</p>
+              <p>{email}</p>
+            </div>
             </div>
           <div className="lg:flex-4 lg:flex hidden justify-between">
             <div className="flex flex-col w-2/6">

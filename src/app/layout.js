@@ -9,7 +9,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  metadataBase: new URL(siteConfig.baseUrl),
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: "All New Tech - UK Security & Smart Technology Solutions",
     template: "%s | All New Tech",
@@ -65,7 +65,7 @@ export const metadata = {
     images: ["/og-image.jpg"],
   },
   alternates: {
-    canonical: siteConfig.baseUrl,
+    canonical: siteConfig.url,
   },
 };
 
