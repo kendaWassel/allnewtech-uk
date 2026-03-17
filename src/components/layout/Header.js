@@ -12,7 +12,8 @@ const Header = () => {
           <Image
             src="/Logo-light.svg"
             alt="All New Tech Logo"
-            fill
+            width={230}
+            height={90}
             priority
             sizes="(min-width: 1024px) 230px, (min-width: 640px) 180px, 95px"
             className="object-cover p-2 lg:p-4"
