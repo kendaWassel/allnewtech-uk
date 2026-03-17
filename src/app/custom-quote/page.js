@@ -6,23 +6,31 @@ import contact from "@/content/contact.json";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Get Custom Quote",
+  title: {
+    absolute: `Request a Custom Quote | ${siteConfig.name}`,
+  },
   description:
-    "Get in touch with All New Tech for a free site survey or custom quote. Professional security and technology solutions across the UK.",
+    "Request a tailored quote for CCTV, alarm systems, access control, and smart automation. Professional installation across the UK.",
   keywords: [
-    "contact all new tech",
-    "book site visit",
     "request quote",
+    "custom quote",
     "security consultation",
     "CCTV quote",
-    "free site survey",
     "security installation quote",
   ],
   openGraph: {
-    title: "Custom Quote",
+    title: `Request a Custom Quote | ${siteConfig.name}`,
     description:
-      "Schedule a professional site assessment or request a tailored quote for your security and technology needs.",
+      "Tell us about your requirements and get a tailored quote for your security and technology needs across the UK.",
     url: `${siteConfig.baseUrl}/custom-quote`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Request a Custom Quote | ${siteConfig.name}`,
+    description:
+      "Tell us about your requirements and get a tailored quote for your security and technology needs across the UK.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/custom-quote`,

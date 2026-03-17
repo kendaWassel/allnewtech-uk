@@ -24,6 +24,7 @@ const DiscoverSection = ({ propertyType = 'home' }) => {
             alt={imageAlt}
             width={400}
             height={465}
+            sizes="(min-width: 1024px) 400px, (min-width: 768px) 304px, (min-width: 640px) 240px, 128px"
             className="relative w-[8rem] sm:w-[15rem] md:w-[19rem] lg:w-[25rem] h-full object-cover rounded-r-[50%]"
           />
         </div>

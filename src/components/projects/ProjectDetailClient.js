@@ -114,7 +114,7 @@ const ProjectDetailClient = ({ project }) => {
                     alt={project.title}
                     fill
                     className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 1023px) 100vw, 60vw"
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200" />
@@ -127,7 +127,7 @@ const ProjectDetailClient = ({ project }) => {
                 className="hidden md:block absolute top-1/2 -translate-y-1/2 lg:left-[2rem] left-[0.5rem] bg-[var(--secondary)] cursor-pointer text-white px-[0.75rem] py-[1.4rem] z-10 rotate-180"
                 aria-label="Previous image"
               >
-                <Image src="/icons/arrow.svg" width={12} height={20} alt="Previous image" />
+                <Image src="/icons/arrow.svg" width={12} height={20} alt="Previous image" sizes="12px" />
                     </button>
                     <button
                       type="button"
@@ -135,7 +135,7 @@ const ProjectDetailClient = ({ project }) => {
                 className="hidden md:block absolute top-1/2 -translate-y-1/2 lg:right-[2rem] right-[0.5rem] bg-[var(--secondary)] cursor-pointer text-white px-[0.75rem] py-[1.4rem] z-10"
                 aria-label="Next image"
               >
-                <Image src="/icons/arrow.svg" width={12} height={20} alt="Next image" />
+                <Image src="/icons/arrow.svg" width={12} height={20} alt="Next image" sizes="12px" />
 
                     </button>
                   </>
@@ -157,7 +157,7 @@ const ProjectDetailClient = ({ project }) => {
                         alt={`Thumbnail ${index + 1}`}
                         fill
                         className="object-cover"
-                        sizes="100px"
+                        sizes="(min-width: 1024px) 96px, (min-width: 768px) 80px, 48px"
                       />
                     </button>
                   ))}
@@ -168,7 +168,7 @@ const ProjectDetailClient = ({ project }) => {
                       className="cursor-pointer lg:ml-[1.5rem] md:text-2xl flex items-center"
                     >
                       See More
-                      <Image src="/icons/arrow-right.svg" alt="right arrow" width={25} height={25} />
+                      <Image src="/icons/arrow-right.svg" alt="right arrow" width={25} height={25} sizes="25px" />
                     </button>
                   )}
                 </div>
@@ -189,6 +189,7 @@ const ProjectDetailClient = ({ project }) => {
                         alt="Home Label"
                         width={50}
                         height={50}
+                        sizes="50px"
                       />
                     ) : (
                       <Image
@@ -196,6 +197,7 @@ const ProjectDetailClient = ({ project }) => {
                         alt="Commercial Label"
                         width={50}
                         height={50}
+                        sizes="50px"
                       />
                     )}
                   </div>
@@ -257,15 +259,16 @@ const ProjectDetailClient = ({ project }) => {
         <div className="fixed inset-0 bg-[#00000094] z-1000 flex items-center justify-center">
           <div
             ref={modalRef}
-            className="relative py-[2rem] md:py-[5rem] overflow-y-auto bg-[var(--white)] md:max-w-[75%] max-w-[90%] max-h-[90vh] flex flex-col"
+            className="relative overflow-hidden bg-[var(--white)] md:max-w-[75%] max-w-[90%] max-h-[90vh] flex flex-col"
           >
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-0 right-0 p-[0.4rem] md:p-[0.75rem] bg-[var(--primary-blue-first)] rounded-bl-[12px] md:rounded-bl-[24px] cursor-pointer"
+                className="absolute top-0 right-0 p-[0.4rem] md:p-[0.75rem] bg-[var(--primary-blue-first)] rounded-bl-[12px] md:rounded-bl-[24px] cursor-pointer z-10"
                 aria-label="Close modal"
               >
-                <Image src="/icons/XModal.svg" alt="close button" width={33} height={33} className="w-[19.5px] h-[19.5px] md:w-[33px] md:h-[33px]"/>
+                <Image src="/icons/XModal.svg" alt="close button" width={33} height={33} sizes="(min-width: 768px) 33px, 20px" className="w-[19.5px] h-[19.5px] md:w-[33px] md:h-[33px]"/>
               </button>
+            <div className="h-full my-[3.5rem] py-[2rem] md:py-[5rem] overflow-y-auto pe-1 [scrollbar-width:thin] [scrollbar-color:#8B909A_transparent] [&::-webkit-scrollbar]:w-[8px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#8B909A] [&::-webkit-scrollbar-thumb]:border-[2px] [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-[#737A85]">
             {/* modal header */}
             <div className="px-[2rem] md:px-[3rem] lg:px-[6rem] flex flex-col gap-5 lg:flex-row items-start justify-between">
               <h3 className="flex-2 font-bold text-base md:text-3xl lg:text-[2.5rem]">
@@ -274,12 +277,13 @@ const ProjectDetailClient = ({ project }) => {
               <div className="flex-1 relative flex items-start">
                 {project.propertyType && (
                   <div className="w-[35px] h-[35px] md:w-[50px] md:h-[50px]">
-                    {project.propertyType === "Home" ? (
+                    {project.propertyType === "home" ? (
                       <Image
                         src="/projects/home-label.svg"
                         alt="Home Label"
                         width={50}
                         height={50}
+                        sizes="(min-width: 768px) 50px, 35px"
                         className="w-full h-full"
                       />
                     ) : (
@@ -288,6 +292,7 @@ const ProjectDetailClient = ({ project }) => {
                         alt="Commercial Label"
                         width={50}
                         height={50}
+                        sizes="(min-width: 768px) 50px, 35px"
                         className="w-full h-full"
                       />
                     )}
@@ -308,7 +313,7 @@ const ProjectDetailClient = ({ project }) => {
                 className="hidden md:block absolute lg:left-[2rem] left-[0.5rem] bg-[var(--secondary)] cursor-pointer text-white px-[0.75rem] py-[1.4rem] z-10 rotate-180"
                 aria-label="Previous image"
               >
-                <Image src="/icons/arrow.svg" width={12} height={20} alt="Previous image"/>
+                <Image src="/icons/arrow.svg" width={12} height={20} alt="Previous image" sizes="12px"/>
               </button>
 
               <div className="relative w-full h-[13rem] md:h-[25rem] lg:h-[37rem]">
@@ -328,14 +333,14 @@ const ProjectDetailClient = ({ project }) => {
                 className="hidden md:block absolute lg:right-[2rem] right-[0.5rem] bg-[var(--secondary)] cursor-pointer text-white px-[0.75rem] py-[1.4rem] z-10"
                 aria-label="Next image"
               >
-                <Image src="/icons/arrow.svg" width={12} height={20} alt="Next image" />
+                <Image src="/icons/arrow.svg" width={12} height={20} alt="Next image" sizes="12px" />
 
               </button>
             </div>
             {/* thumbnail row in modal */}
             {/* its width is smaller than the main image so it will depends on the padding ,taking the full width minus x2 of padding(right,left) */}
             <div className="max-w-[calc(100%_-_8rem)] lg:max-w-[calc(100%_-_12rem)] mx-[auto] md:mt-[2rem] mt-[0.5rem] lg:px-[6rem]">
-              <div className="flex gap-1 md:gap-2 overflow-x-auto overflow-y-hidden pb-2">
+              <div className="flex gap-1 md:gap-2 overflow-x-auto overflow-y-hidden pb-2 justify-center [scrollbar-width:thin] [scrollbar-color:#8B909A_transparent] [&::-webkit-scrollbar]:h-[8px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#8B909A] [&::-webkit-scrollbar-thumb]:border-[2px] [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-[#737A85]">
                 {allImages.map((img, index) => (
                   <button
                     key={index}
@@ -351,11 +356,12 @@ const ProjectDetailClient = ({ project }) => {
                       alt={`Thumbnail ${index + 1}`}
                       fill
                       className="object-cover"
-                      sizes="96px"
+                      sizes="(min-width: 768px) 96px, 40px"
                     />
                   </button>
                 ))}
               </div>
+            </div>
             </div>
           </div>
         </div>

@@ -1,30 +1,16 @@
 import home from '@/content/homepage';
 import Image from 'next/image';
 import Link from 'next/link';
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 
 const Projects = async () => {
   let projects = [];
   let error = null;
 
   try {
-    const url = getApiUrl(apiConfig.endpoints.projects);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(apiConfig.endpoints.projects, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
     projects = (data.data || []).slice(0, 3).map((project) => {
       const raw =
         project.main_image ||
@@ -94,7 +80,7 @@ const Projects = async () => {
           className="flex items-center text-lg lg:text-2xl font-bold flex items-center gap-2"
         >
           <span>{home.projects.link}</span>
-          <Image src="/icons/arrow-right.svg" alt="right arrow" width={25} height={25}/>
+          <Image src="/icons/arrow-right.svg" alt="right arrow" width={25} height={25} sizes="25px"/>
         </Link>
       </div>
     </section>

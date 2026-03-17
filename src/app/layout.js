@@ -9,7 +9,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(siteConfig.baseUrl),
   title: {
     default: "All New Tech - UK Security & Smart Technology Solutions",
     template: "%s | All New Tech",
@@ -48,24 +48,16 @@ export const metadata = {
     title: "All New Tech - UK Security & Smart Technology Solutions",
     description:
       "Trusted UK-based security and technology solutions provider. Professional CCTV, alarm systems, access control, and smart automation.",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "All New Tech - Security & Technology Solutions",
-      },
-    ],
+
   },
   twitter: {
     card: "summary_large_image",
     title: "All New Tech - UK Security & Smart Technology Solutions",
     description:
       "Trusted UK-based security and technology solutions provider. Professional CCTV, alarm systems, access control, and smart automation.",
-    images: ["/og-image.jpg"],
   },
   alternates: {
-    canonical: siteConfig.url,
+    canonical: siteConfig.baseUrl,
   },
 };
 

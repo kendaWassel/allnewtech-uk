@@ -1,4 +1,4 @@
-import { getApiUrl, apiConfig } from '@/config/api';
+import { apiConfig, fetchFromAPI } from '@/config/api';
 import ContactFormClient from './ContactFormClient';
 
 const ContactForm = async () => {
@@ -8,19 +8,15 @@ const ContactForm = async () => {
   let error = null;
 
   try {
-    const [formRes, locationsRes] = await Promise.all([
-      fetch(getApiUrl(apiConfig.endpoints.contactForm), { cache: 'no-store' }),
-      fetch(getApiUrl(apiConfig.endpoints.locations), { cache: 'no-store' }),
+    const [formData, locationsData] = await Promise.all([
+      fetchFromAPI(apiConfig.endpoints.contactForm, { cache: 'no-store' }),
+      fetchFromAPI(apiConfig.endpoints.locations, { cache: 'no-store' }),
     ]);
 
-    const formData = await formRes.json();
-    if (formData.success) {
-      services = formData.data.services;
-      propertyTypes = formData.data.propertyType;
-    }
+    services = formData.data?.services || [];
+    propertyTypes = formData.data?.propertyType || [];
 
-    const locationsData = await locationsRes.json();
-    if (locationsData.success && Array.isArray(locationsData.data)) {
+    if (Array.isArray(locationsData.data)) {
       locations = locationsData.data;
     }
     

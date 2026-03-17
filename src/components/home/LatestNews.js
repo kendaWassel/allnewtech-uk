@@ -1,29 +1,15 @@
 import CTAButton from "../ui/CTAButton"
 import Image from "next/image"
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 
 const LatestNews = async () => {
     let news = [];
     let error = null;
 
     try {
-        const url = getApiUrl(apiConfig.endpoints.latestNews);
-        const response = await fetch(url, {
+        const data = await fetchFromAPI(apiConfig.endpoints.latestNews, {
             next: { revalidate: 60 },
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-
-        if (!response.ok) {
-            throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        
-        if (!data.success) {
-            throw new Error(data.msg || 'API request was not successful');
-        }
         
         news = data.data.map((item) => {
             const content = item.content || '';

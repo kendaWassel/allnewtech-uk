@@ -1,5 +1,5 @@
 
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 import AvailableServicesClient from './AvailableServicesClient';
 
 const AvailableServices = async ({ propertyType = 'home' }) => {
@@ -7,22 +7,9 @@ const AvailableServices = async ({ propertyType = 'home' }) => {
   let error = null;
 
   try {
-    const url = getApiUrl(apiConfig.endpoints.services);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(apiConfig.endpoints.services, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
     
     const allServices = data.data.map((service) => ({
       id: service.id,
@@ -43,7 +30,7 @@ const AvailableServices = async ({ propertyType = 'home' }) => {
     services = [];
   }
 
-  return <AvailableServicesClient services={services} propertyType={propertyType} error={error} />;
+  return <AvailableServicesClient services={services} error={error} />;
 };
 
 export default AvailableServices;

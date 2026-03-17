@@ -16,6 +16,7 @@ const TestimonialsCarousel = ({ testimonials }) => {
         aria-hidden="true"
         width={50}
         height={50}
+        sizes="(min-width: 1024px) 50px, (min-width: 768px) 20px, 15px"
         className={`lg:w-[50px] lg:h-[50px] md:w-[20px] md:h-[20px] w-[15px] h-[15px] lg:p-[0.5rem] p-[0.1rem] lg:rounded-[8px] rounded-[4px] ${index < rating ? 'bg-[var(--yellow)]' : 'bg-[#989898]'}`}
       />
     ));
@@ -37,13 +38,22 @@ const TestimonialsCarousel = ({ testimonials }) => {
           alt="Previous"
           width={12}
           height={11}
+          sizes="(min-width: 1024px) 12px, 8px"
           className="rotate-180 lg:w-[12px] lg:h-[11px] w-[8px] h-[15px]"
         />
       </button>
       {/* blue shape  */}
       <div className="md:block hidden absolute right-0 lg:top-[90px] top-[60px] z-110">
-        <Image src="/icons/blue-shape.svg" alt="blue shape" width={355} height={400} className='lg:w-[355px] lg:h-[400px] w-[250px]' />
+        <Image
+          src="/icons/blue-shape.svg"
+          alt="blue shape"
+          width={355}
+          height={400}
+          sizes="(min-width: 1024px) 355px, 250px"
+          className='lg:w-[355px] lg:h-[400px] w-[250px]'
+        />
       </div>
+      <div className="w-full h-full">
       <Swiper
         modules={[Navigation]}
         spaceBetween={0}
@@ -59,42 +69,44 @@ const TestimonialsCarousel = ({ testimonials }) => {
       >
         {testimonials.map((testimonial) => (
           <SwiperSlide key={testimonial.id} role="group" aria-roledescription="slide" aria-label="Customer testimonial">
-            <article
-              itemScope
-              itemType="https://schema.org/Review"
-              className="lg:px-[var(--inline-padding)] px-[var(--small-padding)] flex items-center relative z-100 h-full"
-              aria-live="polite"
-            >
-              <div className="absolute xl:w-[30rem] xl:h-[30rem] lg:w-[25rem] lg:h-[25rem] md:w-[20rem] md:h-[20rem] sm:w-[10rem] sm:h-[10rem] w-[6rem] h-[6rem] bg-white lg:left-[10%] sm:left-[3rem] left-[2rem] rounded-full flex items-center justify-center overflow-hidden">
-                <User imageUrl={testimonial.image} alt="Customer testimonial" />
-              </div>
-              <div className="md:flex-1 sm:flex-3 flex-2" aria-hidden="true" />
-              <div className="md:flex-1 sm:flex-5 flex-3">
-                <div
-                  className="flex lg:gap-3 gap-1 lg:mb-[2rem] md:mb-[1rem] mb-[0.5rem] lg:mt-[3rem] md:mt-0 mt-[1.5rem]"
-                  itemProp="reviewRating"
-                  itemScope
-                  itemType="https://schema.org/Rating"
-                  role="img"
-                  aria-label={`Rating: ${testimonial.rating} out of 5 stars`}
-                >
-                  <meta itemProp="ratingValue" content={String(testimonial.rating)} />
-                  <meta itemProp="bestRating" content="5" />
-                  {renderStars(testimonial.rating)}
+<article
+                itemScope
+                itemType="https://schema.org/Review"
+                className="relative z-100 flex h-full items-center px-[var(--small-padding)] lg:px-[var(--inline-padding)]"
+                aria-live="polite"
+              >
+                <div className="flex-2 sm:flex-3 md:flex-1" aria-hidden="true" />
+                <div className="relative flex-3 sm:flex-5 md:flex-1">
+                  <div
+                    className="flex lg:gap-3 gap-1 lg:mb-[2rem] md:mb-[1rem] mb-[0.5rem] lg:mt-[3rem] md:mt-0 mt-[1.5rem]"
+                    itemProp="reviewRating"
+                    itemScope
+                    itemType="https://schema.org/Rating"
+                    role="img"
+                    aria-label={`Rating: ${testimonial.rating} out of 5 stars`}
+                  >
+                    <meta itemProp="ratingValue" content={String(testimonial.rating)} />
+                    <meta itemProp="bestRating" content="5" />
+                    {renderStars(testimonial.rating)}
+                  </div>
+                  <div className="md:w-[75%] w-[90%]">
+                    <p className="text-white lg:text-2xl md:text-[1rem] text-[0.75rem] leading-[1.2] mb-6" itemProp="reviewBody">
+                      {testimonial.text}
+                    </p>
+                  </div>
+                  <span itemProp="author" itemScope itemType="https://schema.org/Person" className="sr-only">
+                    <span itemProp="name">Customer</span>
+                  </span>
+
+                  <div className="absolute w-[6rem] h-[6rem] sm:w-[10rem] sm:h-[10rem] md:w-[20rem] md:h-[20rem] lg:w-[25rem] lg:h-[25rem] xl:w-[30rem] xl:h-[30rem] bg-white top-1/2 -translate-y-1/2 start-[-6.5rem] sm:start-[-11rem] md:start-[-21rem] lg:start-[-26rem] xl:start-[-35rem] rounded-full flex items-center justify-center overflow-hidden">
+                    <User imageUrl={testimonial.image} alt="Customer testimonial" />
+                  </div>
                 </div>
-                <div className="md:w-[75%] w-[95%]">
-                  <p className="text-white lg:text-2xl md:text-[1rem] text-[0.75rem] leading-[1.2] mb-6" itemProp="reviewBody">
-                    {testimonial.text}
-                  </p>
-                </div>
-                <span itemProp="author" itemScope itemType="https://schema.org/Person" className="sr-only">
-                  <span itemProp="name">Customer</span>
-                </span>
-              </div>
-            </article>
+              </article>
           </SwiperSlide>
         ))}
       </Swiper>
+      </div>
       {/* Right Navigation Arrow */}
       <button
         className="absolute z-120 lg:right-5 right-[6px] top-1/2 -translate-y-1/2 
@@ -109,6 +121,7 @@ const TestimonialsCarousel = ({ testimonials }) => {
           alt="Next"
           width={12}
           height={11}
+          sizes="(min-width: 1024px) 12px, 8px"
           className='lg:w-[12px] lg:h-[11px] w-[8px] h-[15px]'
         />
       </button>

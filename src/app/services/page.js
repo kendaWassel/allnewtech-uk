@@ -6,7 +6,9 @@ import services from "@/content/services";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Services",
+  title: {
+    absolute: `Services | ${siteConfig.name}`,
+  },
   description:
     "Advanced security and technology solutions for homes and businesses. CCTV systems, alarm systems, access control, and smart automation. Professional installation across the UK.",
   keywords: [
@@ -20,10 +22,18 @@ export const metadata = {
     "security solutions",
   ],
   openGraph: {
-    title: "Our Services | Security & Technology Solutions UK",
+    title: `Services | ${siteConfig.name}`,
     description:
       "Advanced Security & Technology Solutions for Homes and Businesses. Integrated security and smart technology systems designed to protect, control, and enhance properties.",
     url: `${siteConfig.baseUrl}/services`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Services | ${siteConfig.name}`,
+    description:
+      "CCTV, alarms, access control and smart automation services for homes and businesses across the UK.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/services`,

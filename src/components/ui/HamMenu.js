@@ -15,15 +15,15 @@ const HamMenu = () => {
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
-          <Image src="/icons/ham-menu.svg" alt="menu icon" width={19} height={14}/>
+          <Image src="/icons/ham-menu.svg" alt="menu icon" width={19} height={14} sizes="19px"/>
         </button>        
         {isMenuOpen && (
           <div 
-            className="lg:hidden fixed inset-0 bg-black opacity-50 z-999"
+            className="lg:hidden fixed h-screen inset-0 bg-black opacity-50 z-999"
             onClick={() => setIsMenuOpen(false)}
           ></div>
         )}
-        <div className={`lg:hidden fixed top-0 left-0 h-full w-2/3 bg-[var(--secondary)] z-1000 transform transition-transform duration-300 ease-in-out ${
+        <div className={`lg:hidden fixed top-0 h-screen left-0 h-full w-2/3 bg-[var(--secondary)] z-1000 transform transition-transform duration-300 ease-in-out ${
           isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <button
@@ -31,7 +31,7 @@ const HamMenu = () => {
             className="absolute top-[3rem] right-[1.5rem]"
             aria-label="Close menu"
           >
-            <Image src="/icons/XCircle.svg" alt="close button" width={19.5} height={19.5}/>
+            <Image src="/icons/XCircle.svg" alt="close button" width={19.5} height={19.5} sizes="20px"/>
           </button>
           
           {/* Navigation Links */}
@@ -61,6 +61,7 @@ const HamMenu = () => {
                 alt="All New Tech Logo" 
                 width={48} 
                 height={48}
+                sizes="(min-width: 1024px) 0px, 67vw"
                 className="object-contain h-[75px] w-full"
               />
             </div>

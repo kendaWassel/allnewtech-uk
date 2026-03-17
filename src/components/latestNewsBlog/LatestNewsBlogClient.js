@@ -15,6 +15,7 @@ const LatestNewsBlogClient = ({ news }) => {
                 width={420}
                 height={160}
                 className="w-full h-[160px] md:h-[500px] object-cover"
+                sizes="(min-width: 768px) calc(100vw - 12rem), 100vw"
               />
             ) : (
               <div className="w-full h-full bg-gray-200" />

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import ServicesCTA from "./ServicesCTA";
 import homeSolutions from "@/content/home-solutions";
 
-const AvailableServicesClient = ({ services, propertyType = 'home', error = null }) => {
+const AvailableServicesClient = ({ services, error = null }) => {
   const [activeSection, setActiveSection] = useState(0);
 
   useEffect(() => {
@@ -138,6 +138,7 @@ const AvailableServicesClient = ({ services, propertyType = 'home', error = null
                     alt={service.title}
                     width={308}
                     height={788}
+                    sizes="(min-width: 1280px) 723px, (min-width: 768px) 70vw, (min-width: 640px) 350px, 100vw"
                     className="w-full h-full object-cover"
                   />
                 ) : (

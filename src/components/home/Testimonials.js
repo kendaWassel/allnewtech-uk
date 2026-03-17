@@ -1,4 +1,4 @@
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 import TestimonialsCarousel from './TestimonialsCarousel';
 
 const Testimonials = async () => {
@@ -6,23 +6,9 @@ const Testimonials = async () => {
   let error = null;
 
   try {
-    const url = getApiUrl(apiConfig.endpoints.reviews);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(apiConfig.endpoints.reviews, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
     
     testimonials = data.data.map((review) => ({
       id: review.id,
@@ -59,7 +45,17 @@ const Testimonials = async () => {
             </p>
           </div>
         ) : (
+          <>
+          <div className="sr-only">
+      {testimonials.map((t) => (
+        <div key={t.id}>
+          <p>{t.text}</p>
+          <span>Rating: {t.rating}/5</span>
+        </div>
+      ))}
+    </div>
           <TestimonialsCarousel testimonials={testimonials} />
+      </>
         )}
       </div>
     </section>

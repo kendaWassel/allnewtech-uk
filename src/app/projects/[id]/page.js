@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 import ProjectDetailLoading from "@/components/projects/ProjectDetailLoading";
 import CTA from "@/components/services/ServicesCTA";
-import { apiConfig, getApiUrl } from "@/config/api";
+import { apiConfig, fetchFromAPI } from "@/config/api";
 import { siteConfig } from "@/config/site";
 
 export async function generateMetadata({ params }) {
@@ -12,10 +12,9 @@ export async function generateMetadata({ params }) {
     "View detailed information about our security and technology installation project.";
 
   try {
-    const res = await fetch(getApiUrl(`${apiConfig.endpoints.portfolioProjects}/${id}`), {
+    const data = await fetchFromAPI(`${apiConfig.endpoints.portfolioProjects}/${id}`, {
       next: { revalidate: 60 },
     });
-    const data = await res.json();
     if (data?.success && data?.data) {
       title = data.data.title || title;
       const desc = data.data.description || "";
@@ -26,12 +25,21 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title,
+    title: {
+      absolute: `${title} | ${siteConfig.name}`,
+    },
     description,
     openGraph: {
-      title: `${title} | Project`,
+      title: `${title} | ${siteConfig.name}`,
       description,
       url: `${siteConfig.baseUrl}/projects/${id}`,
+      siteName: siteConfig.name,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | ${siteConfig.name}`,
+      description,
     },
     alternates: {
       canonical: `${siteConfig.baseUrl}/projects/${id}`,

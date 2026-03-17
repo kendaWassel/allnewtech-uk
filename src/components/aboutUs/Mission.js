@@ -9,7 +9,14 @@ const Mission = () => {
                     <h1 className='font-bold mb-[1.5rem] md:mb-[2rem] lg:mb-[3rem] text-2xl md:text-3xl lg:text-5xl '>{mission.title}</h1>
                     <p className='md:text-2xl'>{mission.description}</p>
                 </div>
-                <Image src="/about-us/about-1.svg" alt="security camera image" width={423} height={325} className='lg:order-2 order-1' />
+                <Image
+                    src="/about-us/about-1.svg"
+                    alt="security camera image"
+                    width={423}
+                    height={325}
+                    sizes="(min-width: 1024px) 423px, 100vw"
+                    className='lg:order-2 order-1'
+                />
             </div>
         </section>
     )

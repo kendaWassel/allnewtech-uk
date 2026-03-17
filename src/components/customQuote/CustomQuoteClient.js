@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { getApiUrl } from '@/config/api';
+import { apiConfig, postToAPI } from '@/config/api';
 import contact from '@/content/contact.json';
 
 const quoteRequest = contact.quoteRequest;
@@ -108,10 +108,12 @@ const CustomQuoteClient = ({
       file,
     }));
   };
-const handlePhoneChange = (e) => {
-  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
-  setFormData((prev) => ({ ...prev, phone: value }));
-};
+  const handlePhoneKeyDown = (e) => {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', '+', '(', ')', '-', ' '];
+    if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -140,18 +142,7 @@ const handleSubmit = async (e) => {
     payload.append('budget_range_id', String(formData.budgetRangeId));
     payload.append('confirmation', formData.confirmation ? '1' : '0');
     if (formData.file) payload.append('file', formData.file);
-
-    const response = await fetch(getApiUrl('/api/request-for-a-quote/'), {
-      method: 'POST',
-      body: payload,
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to submit form: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    if (!data.success) throw new Error(data.msg || 'Failed to submit form');
+    const data = await postToAPI(apiConfig.endpoints.customQuoteSubmit, payload, true);
 
     setSubmitSuccess(data.msg || 'Your quote request has been sent successfully.');
     setFormData({
@@ -174,7 +165,6 @@ const handleSubmit = async (e) => {
 
   } catch (submitErr) {
     setSubmitError(submitErr.message || 'Something went wrong. Please try again.');
-    console.error('Quote form submission error:', submitErr);
   } finally {
     setIsSubmitting(false);
   }
@@ -245,7 +235,8 @@ const handleSubmit = async (e) => {
           name="phone"
           placeholder={phone}
           value={formData.phone}
-          onChange={handlePhoneChange}
+          onChange={handleChange}
+          onKeyDown={handlePhoneKeyDown}
           className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
           required
         />

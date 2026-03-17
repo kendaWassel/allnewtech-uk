@@ -6,7 +6,9 @@ import ProjectsLoading from "@/components/projects/ProjectsLoading";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Our Work",
+  title: {
+    absolute: `Our Work | ${siteConfig.name}`,
+  },
   description:
     "View our portfolio of security and technology installations. Real projects showcasing CCTV, alarm systems, access control, and smart automation solutions.",
   keywords: [
@@ -19,10 +21,18 @@ export const metadata = {
     "completed installations",
   ],
   openGraph: {
-    title: "Our Work | Projects",
+    title: `Our Work | ${siteConfig.name}`,
     description:
       "Real Projects. Proven Results. View our portfolio of security and technology installations across the UK.",
     url: `${siteConfig.baseUrl}/projects`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Our Work | ${siteConfig.name}`,
+    description:
+      "Explore real CCTV, alarm, access control and smart automation installations across the UK.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/projects`,

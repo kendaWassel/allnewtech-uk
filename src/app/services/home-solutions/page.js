@@ -8,7 +8,9 @@ import homeSolutions from "@/content/home-solutions";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Home Solutions",
+  title: {
+    absolute: `Home Solutions | ${siteConfig.name}`,
+  },
   description:
     "Protect your home with intelligent CCTV, alarm systems, access control, and smart automation. Professional home security installations across the UK.",
   keywords: [
@@ -22,10 +24,18 @@ export const metadata = {
     "smart home technology",
   ],
   openGraph: {
-    title: "Home Solutions",
+    title: `Home Solutions | ${siteConfig.name}`,
     description:
       "Protect your home with intelligent systems designed for modern living. Advanced home security and audio-visual solutions that provide peace of mind, control, and convenience.",
     url: `${siteConfig.baseUrl}/services/home-solutions`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Home Solutions | ${siteConfig.name}`,
+    description:
+      "Home security solutions including CCTV, alarms, access control, and smart automation across the UK.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/services/home-solutions`,

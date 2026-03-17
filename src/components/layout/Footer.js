@@ -18,6 +18,7 @@ const Footer = () => {
                   alt="All New Tech Logo" 
                   width={300} 
                   height={160} 
+                  sizes="(min-width: 1024px) 300px, 200px"
                   className="lg:w-[300px] lg:h-[160px] w-[200px] h-[130px] "
                 />
               </Link>
@@ -53,7 +54,7 @@ const Footer = () => {
               <h4 className="text-white font-bold mb-4">Start Your Project Today</h4>
               <div className="flex flex-col gap-2">
                 <Link 
-                  href="/contact-us" 
+                  href="/site-visit" 
                   className="text-white hover:text-blue-400 transition-colors"
                 >
                   Request a Site Survey

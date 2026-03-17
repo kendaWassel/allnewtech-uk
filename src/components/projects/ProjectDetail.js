@@ -1,27 +1,13 @@
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 import ProjectDetailClient from './ProjectDetailClient';
 
 const ProjectDetail = async ({ projectId }) => {
   let project = null;
 
   try {
-    const url = getApiUrl(`${apiConfig.endpoints.portfolioProjects}/${projectId}`);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(`${apiConfig.endpoints.portfolioProjects}/${projectId}`, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
 
     const main = data.data.images?.main?.[0] || '';
     const secondary = data.data.images?.secondary || [];

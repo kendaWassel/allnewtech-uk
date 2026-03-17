@@ -1,30 +1,16 @@
 import home from '@/content/homepage'
 import Image from 'next/image'
 import Brands from './Brands'
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 
 const About = async () => {
     let companies = [];
     let error = null;
 
     try {
-        const url = getApiUrl(apiConfig.endpoints.companies);
-        const response = await fetch(url, {
+        const data = await fetchFromAPI(apiConfig.endpoints.companies, {
             next: { revalidate: 60 },
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
-
-        if (!response.ok) {
-            throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        
-        if (!data.success) {
-            throw new Error(data.msg || 'API request was not successful');
-        }
         
         // Sort by priority if available, otherwise by id
         companies = data.data
@@ -72,7 +58,7 @@ const About = async () => {
                                                 alt={`${company.name}-logo`} 
                                                 fill
                                                 className="object-contain brightness-0 opacity-40"
-                                                sizes="110px"
+                                                sizes="160px"
                                             />
                                         </div>
                                     ))}
@@ -87,7 +73,7 @@ const About = async () => {
                                                 alt={`${company.name}-logo`} 
                                                 fill
                                                 className="object-contain brightness-0 opacity-40"
-                                                sizes="137px"
+                                                sizes="160px"
                                             />
                                         </div>
                                     ))}

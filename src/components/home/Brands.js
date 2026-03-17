@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 
 const Brands = async ({ className = "", companies: providedCompanies = null }) => {
   let companies = [];
@@ -11,23 +11,9 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
     companies = providedCompanies;
   } else {
     try {
-      const url = getApiUrl(apiConfig.endpoints.companies);
-      const response = await fetch(url, {
+      const data = await fetchFromAPI(apiConfig.endpoints.companies, {
         next: { revalidate: 60 },
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
-
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.msg || 'API request was not successful');
-      }
       
       // Sort by priority if available, otherwise by id
       const allCompanies = data.data
@@ -84,7 +70,7 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
                 alt={`${company.name} security solutions partner`}
                 fill
                 className="object-contain brightness-0 opacity-40" 
-                sizes="(max-width: 640px) 70px, (max-width: 768px) 100px, 140px"
+                sizes="(min-width: 1024px) 160px, (min-width: 640px) 80px, 48px"
               />
             </li>
           ))}

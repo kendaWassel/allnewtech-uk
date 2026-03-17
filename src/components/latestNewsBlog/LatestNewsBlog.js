@@ -1,27 +1,13 @@
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI } from '@/config/api';
 import LatestNewsBlogClient from './LatestNewsBlogClient';
 
 const LatestNewsBlog = async ({ newsId }) => {
   let news = null;
 
   try {
-    const url = getApiUrl(`${apiConfig.endpoints.latestNews}/${newsId}`);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(`${apiConfig.endpoints.latestNews}/${newsId}`, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
     news = {
       id: data.data?.id,
       title: data.data?.title || '',

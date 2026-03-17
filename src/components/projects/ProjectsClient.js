@@ -151,6 +151,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
                           alt="Home Label"
                           width={50}
                           height={50}
+                          sizes="50px"
                           /> 
                           :
                            <Image
@@ -158,6 +159,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
                           alt="Commercial Label"
                           width={50}
                           height={50}
+                          sizes="50px"
                           />
                         }
                       </span>

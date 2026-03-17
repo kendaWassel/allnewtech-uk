@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { apiConfig, getApiUrl } from "@/config/api";
+import { apiConfig, postToAPI } from "@/config/api";
 import contact from "@/content/contact.json";
 
 const siteVisit = contact.siteVisit;
@@ -63,14 +63,7 @@ if (selected < today) return 'Please select a future date.';
   if (!formData.confirmation) return "Please confirm the consent checkbox.";
   return "";
 };
-const handleDateChange = (e) => {
-  const value = e.target.value;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const selected = new Date(value);
-  if (selected < today) return;
-  setFormData((prev) => ({ ...prev, preferredDate: value }));
-};
+
 const EmptyState = ({ message }) => (
   <section className="lg:py-[6rem] pb-[3.75rem] xl:px-[15rem] lg:px-[7rem]">
     <div className="flex gap-[3rem] mb-[3rem]">
@@ -116,10 +109,20 @@ const SiteVisitClient = ({
       [name]: type === "checkbox" ? checked : value,
     }));
   };
-const handlePhoneChange = (e) => {
-  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
-  setFormData((prev) => ({ ...prev, phone: value }));
+  const handleDateChange = (e) => {
+  const value = e.target.value;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const selected = new Date(value);
+  if (selected < today) return;
+  setFormData((prev) => ({ ...prev, preferredDate: value }));
 };
+  const handlePhoneKeyDown = (e) => {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', '+', '(', ')', '-', ' '];
+    if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError("");
@@ -147,28 +150,7 @@ const handlePhoneChange = (e) => {
         notes: formData.notes,
         confirmation: formData.confirmation,
       };
-
-      const response = await fetch(
-        getApiUrl(apiConfig.endpoints.siteVisitSubmit),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to submit form: ${response.status} ${response.statusText}`,
-        );
-      }
-
-      const data = await response.json();
-      if (!data.success) {
-        throw new Error(data.msg || "Failed to submit site visit request");
-      }
+      const data = await postToAPI(apiConfig.endpoints.siteVisitSubmit, payload);
 
       setSubmitSuccess(
         data.msg || "Your site visit request has been sent successfully.",
@@ -191,7 +173,6 @@ const handlePhoneChange = (e) => {
       setSubmitError(
         submitErr.message || "Something went wrong. Please try again.",
       );
-      console.error("Site visit form submission error:", submitErr);
     } finally {
       setIsSubmitting(false);
     }
@@ -272,7 +253,8 @@ const handlePhoneChange = (e) => {
               name="phone"
               placeholder={phoneLabel}
               value={formData.phone}
-              onChange={handlePhoneChange}
+              onChange={handleChange}
+              onKeyDown={handlePhoneKeyDown}
               className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
               required
             />

@@ -31,7 +31,7 @@ const Categories = () => {
                   alt={item.title}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 1023px) 100vw, 50vw"
                   priority={index === 0}
                 />
               </div>

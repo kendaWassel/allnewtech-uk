@@ -57,6 +57,7 @@ const ChooseUs = () => {
                       alt="Security lock icon"
                       width={225}
                       height={225}
+                      sizes="(max-width: 767px) 0px, (max-width: 1023px) 150px, 225px"
                       className="w-full h-full"
                     />
                   </div>
@@ -96,6 +97,7 @@ const ChooseUs = () => {
                     alt="Security lock icon"
                     width={97}
                     height={97}
+                    sizes="(min-width: 768px) 0px, 97px"
                     className="w-[97px] h-[97px]"
                   />
                 </div>

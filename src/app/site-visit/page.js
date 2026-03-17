@@ -6,7 +6,9 @@ import contact from '@/content/contact.json';
 import { siteConfig } from '@/config/site';
 
 export const metadata = {
-  title: 'Book A Site Visit',
+  title: {
+    absolute: `Book a Site Visit | ${siteConfig.name}`,
+  },
   description:
     'Book a site visit with All New Tech for a professional assessment and tailored security recommendation.',
   keywords: [
@@ -17,10 +19,18 @@ export const metadata = {
     'access control assessment',
   ],
   openGraph: {
-    title: 'Book A Site Visit',
+    title: `Book a Site Visit | ${siteConfig.name}`,
     description:
       'Schedule a site visit for expert recommendations on your security and technology requirements.',
     url: `${siteConfig.baseUrl}/site-visit`,
+    siteName: siteConfig.name,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Book a Site Visit | ${siteConfig.name}`,
+    description:
+      'Schedule a site visit for expert recommendations on your security and technology requirements.',
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/site-visit`,

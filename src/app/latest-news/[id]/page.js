@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import LatestNewsBlog from "@/components/latestNewsBlog/LatestNewsBlog";
 import LatestNewsBlogLoading from "@/components/latestNewsBlog/LatestNewsBlogLoading";
 import CTA from "@/components/services/ServicesCTA";
-import { apiConfig, getApiUrl } from "@/config/api";
+import { apiConfig, fetchFromAPI } from "@/config/api";
 import { siteConfig } from "@/config/site";
 
 export async function generateMetadata({ params }) {
@@ -12,10 +12,9 @@ export async function generateMetadata({ params }) {
     "Read the latest news and updates from All New Tech on security and technology solutions.";
 
   try {
-    const res = await fetch(getApiUrl(`${apiConfig.endpoints.latestNews}/${id}`), {
+    const data = await fetchFromAPI(`${apiConfig.endpoints.latestNews}/${id}`, {
       next: { revalidate: 60 },
     });
-    const data = await res.json();
     if (data?.success && data?.data) {
       title = data.data.title || title;
       const content = data.data.content || "";
@@ -26,12 +25,21 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title,
+    title: {
+      absolute: `${title} | ${siteConfig.name}`,
+    },
     description,
     openGraph: {
-      title: `${title} | Latest News`,
+      title: `${title} | ${siteConfig.name}`,
       description,
       url: `${siteConfig.baseUrl}/latest-news/${id}`,
+      siteName: siteConfig.name,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | ${siteConfig.name}`,
+      description,
     },
     alternates: {
       canonical: `${siteConfig.baseUrl}/latest-news/${id}`,

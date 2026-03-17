@@ -16,7 +16,7 @@ import { siteConfig } from "@/config/site";
 
 export const metadata = {
   title: {
-    absolute: "All New Tech | CCTV, Alarm & Smart Security Systems"
+    absolute: `${siteConfig.name} | CCTV, Alarm & Smart Security Systems`
   },
   description:
     "All New Tech is a UK-based security and technology solutions provider specialising in CCTV systems, alarm systems, access control, and smart automation for residential and commercial properties.",
@@ -35,6 +35,14 @@ export const metadata = {
     description:
       "Protecting What Matters Most with Intelligent Surveillance, Smart Automation & Professional Installations",
     url: siteConfig.baseUrl,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} | CCTV, Alarm & Smart Security Systems`,
+    description:
+      "UK-based security and technology solutions provider specialising in CCTV, alarms, access control, and smart automation.",
   },
   alternates: {
     canonical: siteConfig.baseUrl,

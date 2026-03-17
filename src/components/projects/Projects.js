@@ -1,27 +1,13 @@
-import { apiConfig, getApiUrl, getImageUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI, getImageUrl } from '@/config/api';
 import ProjectsClient from './ProjectsClient';
 
 const PortfolioProjects = async () => {
   let projects = [];
 
   try {
-    const url = getApiUrl(apiConfig.endpoints.portfolioProjects);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(apiConfig.endpoints.portfolioProjects, {
       next: { revalidate: 60 },
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
 
     projects = data.data.map((project) => ({
       id: project.id,

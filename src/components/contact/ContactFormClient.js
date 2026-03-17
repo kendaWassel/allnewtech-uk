@@ -3,17 +3,7 @@
 import { useState, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { apiConfig, getApiUrl } from '@/config/api';
-
-const validateContactForm = (formData) => {
-  if (!formData.firstName.trim()) return 'First name is required.';
-  if (!formData.lastName.trim()) return 'Last name is required.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
-  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
-  if (!formData.serviceInterest) return 'Please select a service.';
-  if (!formData.propertyType) return 'Please select a property type.';
-  return '';
-};
+import { apiConfig, postToAPI } from '@/config/api';
 
 function useIsLargeScreen() {
   const subscribe = (callback) => {
@@ -26,21 +16,41 @@ function useIsLargeScreen() {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-const ContactMap = dynamic(() => import('./ContactMap'), {
+const ContactMapDesktop = dynamic(() => import('./ContactMapDesktop'), {
   ssr: false,
   loading: () => (
-    <div className="w-full min-h-[320px] lg:min-h-[400px] bg-[var(--white)] animate-pulse flex items-center justify-center">
+    <div className="w-full min-h-[400px] bg-[var(--white)] animate-pulse flex items-center justify-center">
       <span className="text-gray-500 text-sm">Loading map…</span>
     </div>
   ),
 });
+
+const ContactMapMobile = dynamic(() => import('./ContactMapMobile'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full min-h-[200px] bg-[var(--white)] animate-pulse flex items-center justify-center">
+      <span className="text-gray-500 text-sm">Loading map…</span>
+    </div>
+  ),
+}); 
+
+const validateContactForm = (formData) => {
+  if (!formData.firstName.trim()) return 'First name is required.';
+  if (!formData.lastName.trim()) return 'Last name is required.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
+  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
+  if (!formData.serviceInterest) return 'Please select a service.';
+  if (!formData.propertyType) return 'Please select a property type.';
+  return '';
+};
+
 
 const ContactFormFields = ({
   formData,
   services,
   propertyTypes,
   handleChange,
-  handlePhoneChange,
+  handlePhoneKeyDown,
   handleSubmit,
   isSubmitting,
 }) => (
@@ -89,7 +99,8 @@ const ContactFormFields = ({
         name="phone"
         placeholder="Phone"
         value={formData.phone}
-        onChange={handlePhoneChange}
+        onChange={handleChange}
+        onKeyDown={handlePhoneKeyDown}
         className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
         required
       />
@@ -169,19 +180,39 @@ const ImageBlock = () => (
         alt="Contact us"
         width={200}
         height={200}
+        priority
+        sizes="50vw"
         className="w-full h-full object-cover"
       />
   </div>
 );
 
-const MapBlock = ({ locations = [] }) => (
-  <div className="w-full h-full lg:min-h-[400px] min-h-[200px]">
-    <ContactMap locations={locations} />
-  </div>
-);
+const MapBlock = ({ locations = [] ,isLargeScreen}) => {
+    const [active, setActive] = useState(false);
+  const ActiveMap = isLargeScreen ? ContactMapDesktop : ContactMapMobile;
+  return(
+  <div
+      className="relative w-full h-full lg:min-h-[400px] min-h-[200px]"
+      onMouseLeave={() => setActive(false)}
+    >
+      <ActiveMap locations={locations} />
+      {!active && (
+        <div
+          className="absolute inset-0 z-10 cursor-pointer flex items-center justify-center"
+          onClick={() => setActive(true)}
+          onTouchStart={() => setActive(true)}
+        >
+          <span className="bg-black/50 text-white text-sm px-4 py-2 rounded-full pointer-events-none">
+            Tap to interact with map
+          </span>
+        </div>
+      )}
+    </div>
+  )
+}
+  
 
 const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], error = null }) => {
-  console.log('ContactFormClient props:', { services, propertyTypes, locations, error });
   const isLargeScreen = useIsLargeScreen();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -203,10 +234,12 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
       [name]: value,
     }));
   };
-const handlePhoneChange = (e) => {
-  const value = e.target.value.replace(/[^\d+()\-\s]/g, '');
-  setFormData((prev) => ({ ...prev, phone: value }));
-};
+  const handlePhoneKeyDown = (e) => {
+    const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', '+', '(', ')', '-', ' '];
+    if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitError('');
@@ -230,24 +263,7 @@ const handlePhoneChange = (e) => {
         service_id: Number(formData.serviceInterest),
         message: formData.message,
       };
-
-      const response = await fetch(getApiUrl(apiConfig.endpoints.contactSubmit), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit form');
-      }
-
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.msg || 'Failed to submit form');
-      }
+      const data = await postToAPI(apiConfig.endpoints.contactSubmit, payload);
 
       setSubmitSuccess(data.msg || 'Your message has been sent successfully.');
       setFormData({
@@ -284,15 +300,17 @@ const handlePhoneChange = (e) => {
             </p>
           </div>
         </div>
-        <div className="hidden lg:block w-full">{isLargeScreen && <MapBlock locations={locations} />}</div>
+        <div className="hidden lg:block w-full">{isLargeScreen && <MapBlock locations={locations} isLargeScreen={isLargeScreen} />}</div>
 
         {/* mobile: image | map, then message */}
         <div className="lg:hidden flex flex-col gap-[3rem]">
           <div className="flex">
             <div className="w-1/2">
-              <ImageBlock />
+              <ImageBlock/>
             </div>
-            <div className="w-1/2">{!isLargeScreen && <MapBlock locations={locations} />}</div>
+            <div className="w-1/2">
+            {!isLargeScreen && <MapBlock locations={locations} isLargeScreen={isLargeScreen} />}
+            </div>
           </div>
           <div className="w-full flex items-center justify-center px-[2.25rem]">
             <p className="text-center text-base text-gray-600">
@@ -326,7 +344,7 @@ const handlePhoneChange = (e) => {
       {/* desktop: image | form, then full-width map */}
       <div className="hidden lg:flex gap-[3rem] mb-[3rem]">
         <div className="w-1/2">
-          <ImageBlock />
+          <ImageBlock/>
         </div>
         <div className="w-1/2 lg:px-0 px-[2.25rem]">
           <ContactFormFields
@@ -334,22 +352,25 @@ const handlePhoneChange = (e) => {
             services={services}
             propertyTypes={propertyTypes}
             handleChange={handleChange}
-            handlePhoneChange={handlePhoneChange}
+            handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />
           {feedback}
         </div>
       </div>
-      <div className="hidden lg:block w-full">{isLargeScreen && <MapBlock locations={locations} />}</div>
+      <div className="hidden lg:block w-full">
+        {isLargeScreen && <MapBlock locations={locations} isLargeScreen={isLargeScreen} />}
+        </div>
 
       {/* mobile: image | map, then form */}
       <div className="lg:hidden flex flex-col gap-[3rem]">
         <div className="flex">
           <div className="w-1/2">
-            <ImageBlock />
+            <ImageBlock/>
           </div>
-          <div className="w-1/2">{!isLargeScreen && <MapBlock locations={locations} />}</div>
+          <div className="w-1/2">
+          {!isLargeScreen && <MapBlock locations={locations} isLargeScreen={isLargeScreen} />}</div>
         </div>
         <div className="w-full">
           <ContactFormFields
@@ -357,7 +378,7 @@ const handlePhoneChange = (e) => {
             services={services}
             propertyTypes={propertyTypes}
             handleChange={handleChange}
-            handlePhoneChange={handlePhoneChange}
+            handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
           />

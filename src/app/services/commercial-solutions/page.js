@@ -8,7 +8,9 @@ import commercialSolutions from "@/content/commercial-solutions";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "Commercial Solutions",
+  title: {
+    absolute: `Commercial Solutions | ${siteConfig.name}`,
+  },
   description:
     "Professional commercial security systems for offices, retail, warehouses, and industrial sites. CCTV, alarms, access control, and AV solutions for businesses.",
   keywords: [
@@ -22,10 +24,18 @@ export const metadata = {
     "industrial security",
   ],
   openGraph: {
-    title: "Commercial Solutions",
+    title: `Commercial Solutions | ${siteConfig.name}`,
     description:
       "Professional systems built to protect your business and enhance operations. Robust, scalable security and AV solutions for offices, retail, warehouses, and commercial premises.",
     url: `${siteConfig.baseUrl}/services/commercial-solutions`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `Commercial Solutions | ${siteConfig.name}`,
+    description:
+      "Commercial security and AV solutions including CCTV, alarms and access control for businesses across the UK.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/services/commercial-solutions`,

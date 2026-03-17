@@ -1,4 +1,4 @@
-import { apiConfig, getApiUrl } from '@/config/api';
+import { apiConfig, fetchFromAPI } from '@/config/api';
 import SiteVisitClient from './SiteVisitClient';
 
 const SiteVisit = async () => {
@@ -10,22 +10,9 @@ const SiteVisit = async () => {
   let error = null;
 
   try {
-    const url = getApiUrl(apiConfig.endpoints.siteVisitForm);
-    const response = await fetch(url, {
+    const data = await fetchFromAPI(apiConfig.endpoints.siteVisitForm, {
       cache: 'no-store',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    if (!data.success) {
-      throw new Error(data.msg || 'API request was not successful');
-    }
 
     formOptions = {
       services: data.data?.services || [],

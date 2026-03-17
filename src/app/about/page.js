@@ -5,7 +5,9 @@ import CTA from "@/components/home/CTA";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
-  title: "About Us",
+  title: {
+    absolute: `About Us | ${siteConfig.name}`,
+  },
   description:
     "Learn about All New Tech, a trusted UK-based security and technology solutions provider. Experienced technicians delivering high-quality CCTV, alarm, access control, and smart automation systems.",
   keywords: [
@@ -17,10 +19,18 @@ export const metadata = {
     "security professionals",
   ],
   openGraph: {
-    title: "About Us | UK Security & Technology Solutions",
+    title: `About Us | ${siteConfig.name}`,
     description:
       "With years of industry experience, All New Tech has become a trusted partner for individuals and businesses seeking modern security systems and smart automation installation.",
     url: `${siteConfig.baseUrl}/about`,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `About Us | ${siteConfig.name}`,
+    description:
+      "Learn about our UK-based team delivering CCTV, alarms, access control, and smart automation installations.",
   },
   alternates: {
     canonical: `${siteConfig.baseUrl}/about`,
