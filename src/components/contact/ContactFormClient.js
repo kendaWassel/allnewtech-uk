@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore,useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { apiConfig, postToAPI } from '@/config/api';
@@ -49,13 +49,70 @@ const validateContactForm = (formData) => {
   return errors;
 };
 
-
+const CustomSelect = ({ placeholder, options, value, onChange, error }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+ 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    if (open) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [open]);
+ 
+  const selectedLabel = options.find((o) => String(o.id) === String(value))?.name || '';
+ 
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className={`w-full bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] text-xs md:text-base text-left flex items-center justify-between ${
+          error ? 'border border-red-500' : ''
+        }`}
+      >
+        <span className={selectedLabel ? 'text-black' : 'text-black'}>
+          {selectedLabel || placeholder}
+        </span>
+      </button>
+ 
+      {open && (
+        <div className="absolute z-20 mt-1 w-full border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-1 space-y-[0.2rem]">
+{options.map((option) => {
+  const isSelected = String(option.id) === String(value);
+  return (
+    <label
+      key={option.id}
+      className={`block text-xs md:text-sm cursor-pointer px-3 py-2 transition-colors ${
+        isSelected ? 'bg-[var(--secondary)] text-white' : 'hover:bg-[var(--secondary)] hover:text-white'
+      }`}
+    >
+      <input
+        type="radio"
+        checked={isSelected}
+        onChange={() => {
+          onChange(String(option.id));
+          setOpen(false);
+        }}
+        className="hidden"
+      />
+      {option.name}
+    </label>
+  );
+})}
+        </div>
+      )}
+    </div>
+  );
+};
 const ContactFormFields = ({
   formData,
   services,
   propertyTypes,
   fieldErrors,
   handleChange,
+  handleSelectChange,
   handlePhoneKeyDown,
   handleSubmit,
   isSubmitting,
@@ -145,63 +202,25 @@ const ContactFormFields = ({
     )}
     <div className="flex mb-[1.5rem] gap-[1.25rem] md:gap-[2rem]">
       <div className="flex-1">
-      <div
-        className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
-          fieldErrors?.serviceInterest ? 'border border-red-500' : ''
-        }`}
-      >
-        <select
-          name="serviceInterest"
+      <CustomSelect
+          placeholder="Service Interest"
+          options={services}
           value={formData.serviceInterest}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-xs md:text-base appearance-none cursor-pointer"
-          required
-          style={{
-            backgroundColor: 'transparent',
-          }}
-        >
-          <option value="" >Service Interest</option>
-          {services.map((service) => (
-            <option 
-              key={service.id} 
-              value={service.id}
-            >
-              {service.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          onChange={(val) => handleSelectChange('serviceInterest', val)}
+          error={fieldErrors?.serviceInterest}
+        />
       {fieldErrors?.serviceInterest && (
         <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.serviceInterest}</p>
       )}
       </div>
       <div className="flex-1">
-      <div
-        className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
-          fieldErrors?.propertyType ? 'border border-red-500' : ''
-        }`}
-      >
-        <select
-          name="propertyType"
+      <CustomSelect
+          placeholder="Property Type"
+          options={propertyTypes}
           value={formData.propertyType}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-xs md:text-base appearance-none cursor-pointer"
-          required
-          style={{
-            backgroundColor: 'transparent',
-          }}
-        >
-          <option value="" >Property Type</option>
-          {propertyTypes.map((type) => (
-            <option 
-              key={type.id} 
-              value={type.id}
-            >
-              {type.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          onChange={(val) => handleSelectChange('propertyType', val)}
+          error={fieldErrors?.propertyType}
+        />
       {fieldErrors?.propertyType && (
         <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyType}</p>
       )}
@@ -298,6 +317,10 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
     if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
       e.preventDefault();
     }
+  };
+  const handleSelectChange = (name, value) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((prev) => ({ ...prev, [name]: '' }));
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -415,6 +438,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             propertyTypes={propertyTypes}
             fieldErrors={fieldErrors}
             handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
             handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
@@ -442,6 +466,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             propertyTypes={propertyTypes}
             fieldErrors={fieldErrors}
             handleChange={handleChange}
+            handleSelectChange={handleSelectChange}
             handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}
