@@ -42,26 +42,30 @@ const notesPlaceholder = additional.fields.find(
 )?.label;
 
 const validateSiteVisitForm = (formData) => {
-  if (!formData.firstName.trim()) return "First name is required.";
-  if (!formData.lastName.trim()) return "Last name is required.";
+  const errors = {};
+
+  if (!formData.firstName.trim()) errors.firstName = "First name is required.";
+  if (!formData.lastName.trim()) errors.lastName = "Last name is required.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-    return "Please enter a valid email address.";
+    errors.email = "Please enter a valid email address.";
   if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim()))
-        return "Please enter a valid phone number.";
-  if (!formData.postCode.trim()) return "Post code is required.";
+    errors.phone = "Please enter a valid phone number.";
   if (formData.serviceIds.length === 0)
-    return "Please select at least one service.";
-  if (!formData.propertyTypeId) return "Please select a property type.";
-  if (!formData.preferredTimeId) return "Please select a preferred time.";
+    errors.serviceIds = "Please select at least one service.";
+  if (!formData.postCode.trim()) errors.postCode = "Post code is required.";
+  if (!formData.propertyTypeId) errors.propertyTypeId = "Please select a property type.";
+  if (!formData.preferredTimeId) errors.preferredTimeId = "Please select a preferred time.";
   if (!/^\d{4}-\d{2}-\d{2}$/.test(formData.preferredDate))
-    return "Preferred date must be in YYYY-MM-DD format.";
+    errors.preferredDate = "Preferred date must be in YYYY-MM-DD format.";
   const today = new Date();
-today.setHours(0, 0, 0, 0);
-const selected = new Date(formData.preferredDate);
-if (selected < today) return 'Please select a future date.';
-  if (!formData.address.trim()) return "Address is required.";
-  if (!formData.confirmation) return "Please confirm the consent checkbox.";
-  return "";
+  today.setHours(0, 0, 0, 0);
+  const selected = new Date(formData.preferredDate);
+  if (formData.preferredDate && selected < today)
+    errors.preferredDate = "Please select a future date.";
+  if (!formData.address.trim()) errors.address = "Address is required.";
+  // confirmation is optional – don't block submission on it
+
+  return errors;
 };
 
 const EmptyState = ({ message }) => (
@@ -101,12 +105,17 @@ const SiteVisitClient = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
+    }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: "",
     }));
   };
   const handleDateChange = (e) => {
@@ -128,11 +137,23 @@ const SiteVisitClient = ({
     setSubmitError("");
     setSubmitSuccess("");
 
-    const validationError = validateSiteVisitForm(formData);
-    if (validationError) {
-      setSubmitError(validationError);
+    if (!formData.confirmation) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        confirmation: "Please confirm the consent checkbox.",
+      }));
+      setSubmitError("Please confirm the consent checkbox to continue.");
       return;
     }
+
+    const errors = validateSiteVisitForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setSubmitError("Please fix the highlighted fields and try again.");
+      return;
+    }
+
+    setFieldErrors({});
 
     setIsSubmitting(true);
     try {
@@ -206,37 +227,59 @@ const SiteVisitClient = ({
   return (
     <section className="px-[1.3rem] px-0">
       <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[4rem] py-[3.5rem] lg:p-[6.5rem]">
-        <form onSubmit={handleSubmit} className="">
+        <form onSubmit={handleSubmit} noValidate className="">
           <h2 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">
             {siteVisit.title}
           </h2>
 
-          <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[2rem]">
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <input
-                type="text"
-                name="firstName"
-                placeholder={firstNameLabel}
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full placeholder:text-black border-none outline-none text-[0.6rem] sm:text-base"
-                required
-              />
+          <div className="flex mb-[0.5rem] md:mb-[1rem] gap-[0.8rem] md:gap-[2rem]">
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.firstName ? "border border-red-500" : ""
+                }`}
+              >
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder={firstNameLabel}
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full placeholder:text-black border-none outline-none text-[0.6rem] sm:text-base"
+                  required
+                />
+              </div>
+              {fieldErrors.firstName && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+              )}
             </div>
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <input
-                type="text"
-                name="lastName"
-                placeholder={lastNameLabel}
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
-                required
-              />
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.lastName ? "border border-red-500" : ""
+                }`}
+              >
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder={lastNameLabel}
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
+                  required
+                />
+              </div>
+              {fieldErrors.lastName && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+              )}
             </div>
           </div>
 
-          <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+          <div
+            className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
+              fieldErrors.email ? "border border-red-500" : ""
+            }`}
+          >
             <input
               type="email"
               name="email"
@@ -247,7 +290,14 @@ const SiteVisitClient = ({
               required
             />
           </div>
-          <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+          {fieldErrors.email && (
+            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+          )}
+          <div
+            className={`flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
+              fieldErrors.phone ? "border border-red-500" : ""
+            }`}
+          >
             <input
               type="tel"
               name="phone"
@@ -259,42 +309,67 @@ const SiteVisitClient = ({
               required
             />
           </div>
+          {fieldErrors.phone && (
+            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+          )}
 
           <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">
             {siteDetails.title}
           </h3>
 
-          <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[2rem]">
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <select
-                name="propertyTypeId"
-                value={formData.propertyTypeId}
-                onChange={handleChange}
-                className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
-                required
-                style={{ backgroundColor: "transparent" }}
+          <div className="flex mb-[0.5rem] md:mb-[1rem] gap-[0.8rem] md:gap-[2rem]">
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.propertyTypeId ? "border border-red-500" : ""
+                }`}
               >
-                <option value="">{propertyTypeLabel}</option>
-                {formOptions.propertyType.map((type) => (
-                  <option key={type.id} value={type.id}>
-                    {type.name}
-                  </option>
-                ))}
-              </select>
+                <select
+                  name="propertyTypeId"
+                  value={formData.propertyTypeId}
+                  onChange={handleChange}
+                  className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
+                  required
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <option value="">{propertyTypeLabel}</option>
+                  {formOptions.propertyType.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {fieldErrors.propertyTypeId && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
+              )}
             </div>
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <input
-                type="text"
-                name="postCode"
-                placeholder="Post Code"
-                value={formData.postCode}
-                onChange={handleChange}
-                className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
-                required
-              />
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.postCode ? "border border-red-500" : ""
+                }`}
+              >
+                <input
+                  type="text"
+                  name="postCode"
+                  placeholder="Post Code"
+                  value={formData.postCode}
+                  onChange={handleChange}
+                  className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
+                  required
+                />
+              </div>
+              {fieldErrors.postCode && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.postCode}</p>
+              )}
             </div>
           </div>
-          <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+          <div
+            className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
+              fieldErrors.address ? "border border-red-500" : ""
+            }`}
+          >
             <input
               type="text"
               name="address"
@@ -305,10 +380,13 @@ const SiteVisitClient = ({
               required
             />
           </div>
+          {fieldErrors.address && (
+            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.address}</p>
+          )}
           <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] text-start">
             {services.title}
           </h3>
-          <div className="mb-[1.5rem] rounded-[4px] md:rounded-[12px] px-[1rem]">
+          <div className="mb-[1rem] rounded-[4px] md:rounded-[12px] px-[1rem]">
             <div className="flex flex-col gap-2">
 {formOptions.services.map((service) => {
   const isChecked = formData.serviceIds.includes(service.id);
@@ -356,35 +434,58 @@ const SiteVisitClient = ({
 })}
             </div>
           </div>
-          <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[1.5rem]">
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <input
-                type="date"
-                name="preferredDate"
-                min={new Date().toISOString().split('T')[0]}
-                value={formData.preferredDate}
-                onChange={handleDateChange}
-                aria-label={preferredDateLabel || "Preferred Date"}
-                className="w-full border-none outline-none text-[0.6rem] md:text-base date-placeholder"
-                required
-              />
-            </div>
-            <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-              <select
-                name="preferredTimeId"
-                value={formData.preferredTimeId}
-                onChange={handleChange}
-                className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
-                required
-                style={{ backgroundColor: "transparent" }}
+          {fieldErrors.serviceIds && (
+            <p className="mb-[1rem] text-xs text-red-600 text-left">
+              {fieldErrors.serviceIds}
+            </p>
+          )}
+          <div className="flex mb-[0.5rem] md:mb-[1rem] gap-[0.8rem] md:gap-[1.5rem]">
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.preferredDate ? "border border-red-500" : ""
+                }`}
               >
-                <option value="">{preferredTimeLabel}</option>
-                {formOptions.preferredTime.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+                <input
+                  type="date"
+                  name="preferredDate"
+                  min={new Date().toISOString().split('T')[0]}
+                  value={formData.preferredDate}
+                  onChange={handleDateChange}
+                  aria-label={preferredDateLabel || "Preferred Date"}
+                  className="w-full border-none outline-none text-[0.6rem] md:text-base date-placeholder"
+                  required
+                />
+              </div>
+              {fieldErrors.preferredDate && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.preferredDate}</p>
+              )}
+            </div>
+            <div className="flex-1">
+              <div
+                className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+                  fieldErrors.preferredTimeId ? "border border-red-500" : ""
+                }`}
+              >
+                <select
+                  name="preferredTimeId"
+                  value={formData.preferredTimeId}
+                  onChange={handleChange}
+                  className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
+                  required
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <option value="">{preferredTimeLabel}</option>
+                  {formOptions.preferredTime.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {fieldErrors.preferredTimeId && (
+                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.preferredTimeId}</p>
+              )}
             </div>
           </div>
 
@@ -399,14 +500,13 @@ const SiteVisitClient = ({
             />
           </div>
 
-<label className="pe-[1rem] flex items-start gap-2 mb-[1rem] md:mb-[3rem] text-xs md:text-base cursor-pointer">
+<label className="pe-[1rem] flex items-start gap-2 mb-[0.5rem] md:mb-[1rem] text-xs md:text-base cursor-pointer">
   <input
     type="checkbox"
     name="confirmation"
     checked={formData.confirmation}
     onChange={handleChange}
     className="hidden"
-    required
   />
 
   <div
@@ -441,12 +541,20 @@ const SiteVisitClient = ({
 
   <span>{consent.label}</span>
 </label>
+{fieldErrors.confirmation && (
+  <p className="mb-[1.5rem] text-xs text-red-600 text-left">
+    {fieldErrors.confirmation}
+  </p>
+)}
 
           <div className="w-[fit-content] mx-[auto]">
             <button
               type="submit"
-              disabled={isSubmitting || !formData.confirmation}
-              className="text-xs md:text-base bg-[var(--primary-blue-first)] text-white font-bold py-[0.35rem] px-[1rem] md:py-[0.75rem] md:px-[3rem] hover:bg-[var(--primary-blue-second)] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
+              aria-disabled={!formData.confirmation || isSubmitting}
+              className={`text-xs md:text-base bg-[var(--primary-blue-first)] text-white font-bold py-[0.35rem] px-[1rem] md:py-[0.75rem] md:px-[3rem] transition-colors ${
+                !formData.confirmation ? "opacity-60 cursor-not-allowed" : "hover:bg-[var(--primary-blue-second)] cursor-pointer"
+              } disabled:opacity-60 disabled:cursor-not-allowed`}
             >
               {isSubmitting ? "Sending..." : submit.text}
             </button>

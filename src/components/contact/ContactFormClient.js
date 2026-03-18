@@ -35,13 +35,18 @@ const ContactMapMobile = dynamic(() => import('./ContactMapMobile'), {
 }); 
 
 const validateContactForm = (formData) => {
-  if (!formData.firstName.trim()) return 'First name is required.';
-  if (!formData.lastName.trim()) return 'Last name is required.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
-  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
-  if (!formData.serviceInterest) return 'Please select a service.';
-  if (!formData.propertyType) return 'Please select a property type.';
-  return '';
+  const errors = {};
+
+  if (!formData.firstName.trim()) errors.firstName = 'First name is required.';
+  if (!formData.lastName.trim()) errors.lastName = 'Last name is required.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    errors.email = 'Please enter a valid email address.';
+  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim()))
+    errors.phone = 'Please enter a valid phone number.';
+  if (!formData.serviceInterest) errors.serviceInterest = 'Please select a service.';
+  if (!formData.propertyType) errors.propertyType = 'Please select a property type.';
+
+  return errors;
 };
 
 
@@ -49,40 +54,63 @@ const ContactFormFields = ({
   formData,
   services,
   propertyTypes,
+  fieldErrors,
   handleChange,
   handlePhoneKeyDown,
   handleSubmit,
   isSubmitting,
 }) => (
-  <form onSubmit={handleSubmit} className="mx-auto lg:px-0 px-[2.25rem]">
+  <form onSubmit={handleSubmit} noValidate className="mx-auto lg:px-0 px-[2.25rem]">
     <h1 className="font-bold text-2xl lg:text-[2rem] mb-[1.5rem] lg:mb-[2.5rem] text-center">
       Contact Us
     </h1>
     <div className="flex mb-[1.5rem] gap-[1.25rem] md:gap-[2rem]">
-      <div className="flex-1 bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem]">
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          value={formData.firstName}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
-          required
-        />
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
+            fieldErrors?.firstName ? 'border border-red-500' : ''
+          }`}
+        >
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
+            required
+          />
+        </div>
+        {fieldErrors?.firstName && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+        )}
       </div>
-      <div className="flex-1 bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem]">
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          value={formData.lastName}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
-          required
-        />
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
+            fieldErrors?.lastName ? 'border border-red-500' : ''
+          }`}
+        >
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-xs md:text-base"
+            required
+          />
+        </div>
+        {fieldErrors?.lastName && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+        )}
       </div>
     </div>
-    <div className="bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem]">
+    <div
+      className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem] ${
+        fieldErrors?.email ? 'border border-red-500' : ''
+      }`}
+    >
       <input
         type="email"
         name="email"
@@ -93,7 +121,14 @@ const ContactFormFields = ({
         required
       />
     </div>
-    <div className="bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem]">
+    {fieldErrors?.email && (
+      <p className="mb-[1.5rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+    )}
+    <div
+      className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem] ${
+        fieldErrors?.phone ? 'border border-red-500' : ''
+      }`}
+    >
       <input
         type="tel"
         name="phone"
@@ -105,8 +140,16 @@ const ContactFormFields = ({
         required
       />
     </div>
+    {fieldErrors?.phone && (
+      <p className="mb-[1.5rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+    )}
     <div className="flex mb-[1.5rem] gap-[1.25rem] md:gap-[2rem]">
-      <div className="flex-1 bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem]">
+      <div className="flex-1">
+      <div
+        className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
+          fieldErrors?.serviceInterest ? 'border border-red-500' : ''
+        }`}
+      >
         <select
           name="serviceInterest"
           value={formData.serviceInterest}
@@ -122,14 +165,22 @@ const ContactFormFields = ({
             <option 
               key={service.id} 
               value={service.id}
-              
             >
               {service.name}
             </option>
           ))}
         </select>
       </div>
-      <div className="flex-1 bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem]">
+      {fieldErrors?.serviceInterest && (
+        <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.serviceInterest}</p>
+      )}
+      </div>
+      <div className="flex-1">
+      <div
+        className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] ${
+          fieldErrors?.propertyType ? 'border border-red-500' : ''
+        }`}
+      >
         <select
           name="propertyType"
           value={formData.propertyType}
@@ -145,12 +196,15 @@ const ContactFormFields = ({
             <option 
               key={type.id} 
               value={type.id}
-              
             >
               {type.name}
             </option>
           ))}
         </select>
+      </div>
+      {fieldErrors?.propertyType && (
+        <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyType}</p>
+      )}
       </div>
     </div>
     <div className="bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem]">
@@ -226,12 +280,17 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: '',
     }));
   };
   const handlePhoneKeyDown = (e) => {
@@ -245,11 +304,14 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
     setSubmitError('');
     setSubmitSuccess('');
 
-    const validationError = validateContactForm(formData);
-  if (validationError) {
-    setSubmitError(validationError);
-    return;
-  }
+    const errors = validateContactForm(formData);
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      setSubmitError('Please fix the highlighted fields and try again.');
+      return;
+    }
+
+    setFieldErrors({});
 
     setIsSubmitting(true);
 
@@ -351,6 +413,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             formData={formData}
             services={services}
             propertyTypes={propertyTypes}
+            fieldErrors={fieldErrors}
             handleChange={handleChange}
             handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}
@@ -377,6 +440,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
             formData={formData}
             services={services}
             propertyTypes={propertyTypes}
+            fieldErrors={fieldErrors}
             handleChange={handleChange}
             handlePhoneKeyDown={handlePhoneKeyDown}
             handleSubmit={handleSubmit}

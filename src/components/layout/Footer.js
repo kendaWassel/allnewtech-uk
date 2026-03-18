@@ -23,13 +23,20 @@ const Footer = () => {
                 />
               </Link>
               <div className="flex flex-col gap-2 text-white lg:items-start items-center">
-              <address className="not-italic md:w-[70%] w-[80%] ">
+              <address className="flex items-start gap-[0.5rem] not-italic md:w-[70%] w-[80%] ">
+                <Image src="/icons/location.svg" alt="Location Icon" width={25} height={25} />
                 <p className="lg:text-start text-center">
-                  Location - {location}
+                  {location}
                 </p>
               </address>
-              <p>{phoneDisplay}</p>
-              <p>{email}</p>
+              <div className="flex items-center gap-[0.5rem]">
+                <Image src="/icons/phone.svg" alt="Phone Icon" width={25} height={25} />
+                <p>{phoneDisplay}</p>
+              </div>
+              <div className="flex items-center gap-[0.5rem]">
+                <Image src="/icons/email.svg" alt="Email Icon" width={25} height={25} />
+                <p>{email}</p>
+              </div>
             </div>
             </div>
           <div className="lg:flex-4 lg:flex hidden justify-between">
@@ -106,7 +113,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="bg-[var(--primary-blue-second)] py-4 lg:px-[var(--inline-padding)]">
-        <div className="lg:ps-[3rem] lg:text-start text-center">
+        <div className="lg:ps-[3rem] text-center">
           <p className="text-white text-sm">
             ©2026 All New Tech, all rights reserved
           </p>

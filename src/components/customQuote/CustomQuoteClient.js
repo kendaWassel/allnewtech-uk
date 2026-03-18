@@ -29,19 +29,21 @@ const fileUpload =
   additional.fields.find((field) => field.name === 'fileUpload')?.label;
 
 const validateQuoteForm = (formData) => {
-  if (!formData.firstName.trim()) return 'First name is required.';
-  if (!formData.lastName.trim()) return 'Last name is required.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) return 'Please enter a valid email address.';
-if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim())) return 'Please enter a valid phone number.';
-  if (!formData.propertyTypeId) return 'Please select a property type.';
-  if (!formData.postCode.trim()) return 'Post code is required.';
-  if (formData.serviceIds.length === 0) return 'Please select at least one service.';
-  if (!formData.requirements.trim()) return 'Please add your requirements.';
-  if (!formData.preferredContactMethodId) return 'Please select a preferred contact method.';
-  if (!formData.budgetRangeId) return 'Please select a budget range.';
-  if (!formData.file) return 'Please upload a file.';
-  if (!formData.confirmation) return 'Please confirm the consent checkbox.';
-  return '';
+  const errors = {};
+
+  if (!formData.firstName.trim()) errors.firstName = 'First name is required.';
+  if (!formData.lastName.trim()) errors.lastName = 'Last name is required.';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
+    errors.email = 'Please enter a valid email address.';
+  if (!/^\+?[\d\s()\-]{7,15}$/.test(formData.phone.trim()))
+    errors.phone = 'Please enter a valid phone number.';
+  if (!formData.propertyTypeId) errors.propertyTypeId = 'Please select a property type.';
+  if (!formData.postCode.trim()) errors.postCode = 'Post code is required.';
+  if (formData.serviceIds.length === 0)
+    errors.serviceIds = 'Please select at least one service.';
+  // The rest of the fields are optional – don't block submission on them
+
+  return errors;
 };
 
 const EmptyState = ({ message }) => (
@@ -80,12 +82,17 @@ const CustomQuoteClient = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [submitSuccess, setSubmitSuccess] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
+    }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: '',
     }));
   };
 
@@ -120,11 +127,23 @@ const handleSubmit = async (e) => {
   setSubmitError('');
   setSubmitSuccess('');
 
-  const validationError = validateQuoteForm(formData);
-  if (validationError) {
-    setSubmitError(validationError);
+  if (!formData.confirmation) {
+    setFieldErrors((prev) => ({
+      ...prev,
+      confirmation: 'Please confirm the consent checkbox.',
+    }));
+    setSubmitError('Please confirm the consent checkbox to continue.');
     return;
   }
+
+  const errors = validateQuoteForm(formData);
+  if (Object.keys(errors).length > 0) {
+    setFieldErrors(errors);
+    setSubmitError('Please fix the highlighted fields and try again.');
+    return;
+  }
+
+  setFieldErrors({});
 
   setIsSubmitting(true);
 
@@ -187,37 +206,59 @@ const handleSubmit = async (e) => {
   return (
     <section className="px-[1.3rem] px-0">
         <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[3rem] py-[3.5rem] lg:p-[6.5rem]">
-  <form onSubmit={handleSubmit} className="">
+  <form onSubmit={handleSubmit} noValidate className="">
     <h2 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] lg:mb-[1.5rem] text-start">
       {quoteRequest.title}
     </h2>
 
-    <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[2rem]">
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-        <input
-          type="text"
-          name="firstName"
-          placeholder={firstName}
-          value={formData.firstName}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-[0.6rem] sm:text-base"
-          required
-        />
+    <div className="flex mb-[0.5rem] md:mb-[1rem] gap-[0.8rem] md:gap-[2rem]">
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+            fieldErrors.firstName ? 'border border-red-500' : ''
+          }`}
+        >
+          <input
+            type="text"
+            name="firstName"
+            placeholder={firstName}
+            value={formData.firstName}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-[0.6rem] sm:text-base"
+            required
+          />
+        </div>
+        {fieldErrors.firstName && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+        )}
       </div>
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-        <input
-          type="text"
-          name="lastName"
-          placeholder={lastName}
-          value={formData.lastName}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
-          required
-        />
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+            fieldErrors.lastName ? 'border border-red-500' : ''
+          }`}
+        >
+          <input
+            type="text"
+            name="lastName"
+            placeholder={lastName}
+            value={formData.lastName}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
+            required
+          />
+        </div>
+        {fieldErrors.lastName && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+        )}
       </div>
     </div>
 
-    <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+    <div
+      className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
+        fieldErrors.email ? 'border border-red-500' : ''
+      }`}
+    >
       <input
         type="email"
         name="email"
@@ -228,8 +269,15 @@ const handleSubmit = async (e) => {
         required
       />
     </div>
+    {fieldErrors.email && (
+      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+    )}
 
-    <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+    <div
+      className={`flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
+        fieldErrors.phone ? 'border border-red-500' : ''
+      }`}
+    >
         <input
           type="tel"
           name="phone"
@@ -241,42 +289,63 @@ const handleSubmit = async (e) => {
           required
         />
     </div>
+    {fieldErrors.phone && (
+      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+    )}
     <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] lg:mb-[1.5rem] text-start">
       {services.title}
     </h3>
 
-    <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[2rem]">
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-        <select
-          name="propertyTypeId"
-          value={formData.propertyTypeId}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
-          required
-          style={{ backgroundColor: 'transparent' }}
+    <div className="flex mb-[0.5rem] md:mb-[1rem] gap-[0.8rem] md:gap-[2rem]">
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+            fieldErrors.propertyTypeId ? 'border border-red-500' : ''
+          }`}
         >
-          <option value="">{propertyType}</option>
-          {formOptions.propertyType.map((type) => (
-            <option key={type.id} value={type.id}>
-              {type.name}
-            </option>
-          ))}
-        </select>
+          <select
+            name="propertyTypeId"
+            value={formData.propertyTypeId}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
+            required
+            style={{ backgroundColor: 'transparent' }}
+          >
+            <option value="">{propertyType}</option>
+            {formOptions.propertyType.map((type) => (
+              <option key={type.id} value={type.id}>
+                {type.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        {fieldErrors.propertyTypeId && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
+        )}
       </div>
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
-        <input
-          type="text"
-          name="postCode"
-          placeholder={postCode}
-          value={formData.postCode}
-          onChange={handleChange}
-          className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
-          required
-        />
+      <div className="flex-1">
+        <div
+          className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+            fieldErrors.postCode ? 'border border-red-500' : ''
+          }`}
+        >
+          <input
+            type="text"
+            name="postCode"
+            placeholder={postCode}
+            value={formData.postCode}
+            onChange={handleChange}
+            className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base"
+            required
+          />
+        </div>
+        {fieldErrors.postCode && (
+          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.postCode}</p>
+        )}
       </div>
     </div>
     <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] md:mb-[1.5rem] text-start">{services.title}</h3>
-      <div className="mb-[1.5rem] rounded-[4px] md:rounded-[12px] px-[1rem]">
+      <div className="mb-[1rem] rounded-[4px] md:rounded-[12px] px-[1rem]">
         <div className="flex flex-col gap-2">
 {formOptions.services.map((service) => {
   const isChecked = formData.serviceIds.includes(service.id);
@@ -324,7 +393,12 @@ const handleSubmit = async (e) => {
 })}
         </div>
       </div>
-    <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[1rem] py-[0.5rem] md:px-[1rem] md:py-[0.75rem] mb-[1rem] md:mb-[1.5rem]">
+    {fieldErrors.serviceIds && (
+      <p className="mb-[1rem] text-xs text-red-600 text-left">
+        {fieldErrors.serviceIds}
+      </p>
+    )}
+    <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[1rem] py-[0.5rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem]">
       <textarea
         name="requirements"
         placeholder={requirements}
@@ -332,18 +406,20 @@ const handleSubmit = async (e) => {
         onChange={handleChange}
         rows={4}
         className="w-full placeholder:text-black border-none outline-none resize-none min-h-[160px] text-xs md:text-base"
-        required
       />
     </div>
 
     <div className="flex mb-[1rem] md:mb-[1.5rem] gap-[0.8rem] md:gap-[1.5rem]">
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
+      <div
+        className={`flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+          fieldErrors.preferredContactMethodId ? 'border border-red-500' : ''
+        }`}
+      >
         <select
           name="preferredContactMethodId"
           value={formData.preferredContactMethodId}
           onChange={handleChange}
           className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
-          required
           style={{ backgroundColor: 'transparent' }}
         >
           <option value="">{preferredContact}</option>
@@ -355,13 +431,17 @@ const handleSubmit = async (e) => {
         </select>
       </div>
 
-      <div className="flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem]">
+      <div
+        className={`flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] ${
+          fieldErrors.budgetRangeId ? 'border border-red-500' : ''
+        }`}
+      >
         <select
           name="budgetRangeId"
           value={formData.budgetRangeId}
           onChange={handleChange}
           className="w-full placeholder:text-black border-none outline-none text-[0.6rem] md:text-base appearance-none cursor-pointer"
-          required
+          // now optional
           style={{ backgroundColor: 'transparent' }}
         >
           <option value="">{budgetRange}</option>
@@ -373,8 +453,26 @@ const handleSubmit = async (e) => {
         </select>
       </div>
     </div>
+    {(fieldErrors.preferredContactMethodId || fieldErrors.budgetRangeId) && (
+      <div className="mb-[1rem]">
+        {fieldErrors.preferredContactMethodId && (
+          <p className="text-xs text-red-600 text-left">
+            {fieldErrors.preferredContactMethodId}
+          </p>
+        )}
+        {fieldErrors.budgetRangeId && (
+          <p className="text-xs text-red-600 text-left">
+            {fieldErrors.budgetRangeId}
+          </p>
+        )}
+      </div>
+    )}
 
-    <div className="bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[2.5rem] md:mb-[4.5rem]">
+    <div
+      className={`bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[2rem] md:mb-[3rem] ${
+        fieldErrors.file ? 'border border-red-500' : ''
+      }`}
+    >
       <label className="flex items-center justify-between gap-4 text-[0.6rem] md:text-base cursor-pointer">
         <span className="text-[var(--secondary)]">{formData.file?.name || 'File upload'}</span>
         <input
@@ -385,19 +483,21 @@ const handleSubmit = async (e) => {
           title={fileUpload}
           aria-label={fileUpload}
           className="hidden"
-          required
+          // now optional
         />
       </label>
     </div>
+    {fieldErrors.file && (
+      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.file}</p>
+    )}
 
-<label className="pe-[1rem] flex items-start gap-2 mb-[1rem] md:mb-[3rem] text-xs md:text-base cursor-pointer">
+    <label className="pe-[1rem] flex items-start gap-2 mb-[0.5rem] md:mb-[1rem] text-xs md:text-base cursor-pointer">
   <input
     type="checkbox"
     name="confirmation"
     checked={formData.confirmation}
     onChange={handleChange}
     className="hidden"
-    required
   />
 
   <div
@@ -432,11 +532,19 @@ const handleSubmit = async (e) => {
 
   <span>{consent.label}</span>
 </label>
+{fieldErrors.confirmation && (
+  <p className="mb-[1.5rem] text-xs text-red-600 text-left">
+    {fieldErrors.confirmation}
+  </p>
+)}
 <div className='w-[fit-content] mx-[auto] '>
     <button
       type="submit"
-      disabled={isSubmitting || !formData.confirmation}
-      className="text-xs md:text-base bg-[var(--primary-blue-first)] text-white font-bold py-[0.35rem] px-[1rem] md:py-[0.75rem] md:px-[3rem] hover:bg-[var(--primary-blue-second)] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+      disabled={isSubmitting}
+      aria-disabled={!formData.confirmation || isSubmitting}
+      className={`text-xs md:text-base bg-[var(--primary-blue-first)] text-white font-bold py-[0.35rem] px-[1rem] md:py-[0.75rem] md:px-[3rem] transition-colors ${
+        !formData.confirmation ? "opacity-60 cursor-not-allowed" : "hover:bg-[var(--primary-blue-second)] cursor-pointer"
+      } disabled:opacity-60 disabled:cursor-not-allowed`}
     >
       {isSubmitting ? 'Sending...' : submit.text}
     </button>
