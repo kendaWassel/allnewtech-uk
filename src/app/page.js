@@ -13,10 +13,11 @@ import ProjectsLoading from "@/components/home/ProjectsLoading";
 import Testimonials from "@/components/home/Testimonials";
 import TestimonialsLoading from "@/components/home/TestimonialsLoading";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
-    absolute: `${siteConfig.name} | CCTV, Alarm & Smart Security Systems`
+    absolute: `${siteConfig.name} | CCTV, Alarm & Smart Security Systems`,
   },
   description:
     "All New Tech is a UK-based security and technology solutions provider specialising in CCTV systems, alarm systems, access control, and smart automation for residential and commercial properties.",
@@ -31,7 +32,8 @@ export const metadata = {
     "smart home technology",
   ],
   openGraph: {
-    title: "Trusted Security & Smart Technology Solutions for Homes and Businesses",
+    title:
+      "Trusted Security & Smart Technology Solutions for Homes and Businesses",
     description:
       "Protecting What Matters Most with Intelligent Surveillance, Smart Automation & Professional Installations",
     url: siteConfig.baseUrl,
@@ -52,24 +54,40 @@ export const metadata = {
 export default function HomePage() {
   return (
     <main>
-      <Hero />
-      <Suspense fallback={<AboutLoading />}>
-        <About />
-      </Suspense>
-      <HowItWorks />
-      <CTA className="py-[3rem]"/>
-      <Suspense fallback={<ProjectsLoading />}>
-        <Projects />
-      </Suspense>
-      <Suspense fallback={<BrandsLoading />}>
-        <Brands />
-      </Suspense>
-      <Suspense fallback={<TestimonialsLoading />}>
-        <Testimonials />
-      </Suspense>
-      <Suspense fallback={<LatestNewsLoading />}>
-        <LatestNews />
-      </Suspense>
+      <AnimatedSection>
+        <Hero />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Suspense fallback={<AboutLoading />}>
+          <About />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <HowItWorks />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="py-[3rem]" />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<ProjectsLoading />}>
+          <Projects />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<BrandsLoading />}>
+          <Brands />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<TestimonialsLoading />}>
+          <Testimonials />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<LatestNewsLoading />}>
+          <LatestNews />
+        </Suspense>
+      </AnimatedSection>
     </main>
   );
 }

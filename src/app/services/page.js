@@ -4,6 +4,7 @@ import Intro from "@/components/layout/Intro";
 import Categories from "@/components/services/Categories";
 import services from "@/content/services";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
@@ -43,11 +44,18 @@ export const metadata = {
 export default function ServicesPage() {
   return (
     <main>
-      <Hero title={services.hero.title} subtitle={services.hero.subtitle}/>
-      <Intro description={services.intro.description}/>
-      <Categories />
-      <CTA className="py-[6rem]"/>
+      <AnimatedSection>
+        <Hero title={services.hero.title} subtitle={services.hero.subtitle} />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Intro description={services.intro.description} />
+      </AnimatedSection>
+      <AnimatedSection delay={0.4}>
+        <Categories />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="py-[6rem]" />
+      </AnimatedSection>
     </main>
   );
 }
-

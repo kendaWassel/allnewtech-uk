@@ -2,6 +2,7 @@ import ChooseUs from "@/components/aboutUs/ChooseUs";
 import Mission from "@/components/aboutUs/Mission";
 import WhoWeAre from "@/components/aboutUs/WhoWeAre";
 import CTA from "@/components/home/CTA";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 import { siteConfig } from "@/config/site";
 
 export const metadata = {
@@ -40,11 +41,18 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main>
-      <Mission />
-      <WhoWeAre />
-      <ChooseUs />
-      <CTA className="py-[6rem]"/>
+      <AnimatedSection>
+        <Mission />
+      </AnimatedSection>
+      <AnimatedSection>
+        <WhoWeAre />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <ChooseUs />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="py-[6rem]" />
+      </AnimatedSection>
     </main>
   );
 }
-

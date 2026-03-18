@@ -4,7 +4,7 @@ import SiteVisit from '@/components/siteVisit/SiteVisit';
 import SiteVisitLoading from '@/components/siteVisit/SiteVisitLoading';
 import contact from '@/content/contact.json';
 import { siteConfig } from '@/config/site';
-
+import AnimatedSection from '@/components/ui/AnimatedSection';
 export const metadata = {
   title: {
     absolute: `Book a Site Visit | ${siteConfig.name}`,
@@ -40,14 +40,18 @@ export const metadata = {
 export default function BookSiteVisitPage() {
   return (
     <main>
-      <FormIntroHero
-        title={contact.siteVisit.intro}
-        imageSrc="/site-visit-hero.svg"
-        imageAlt="Book a site visit illustration"
-      />
+      <AnimatedSection>
+        <FormIntroHero
+          title={contact.siteVisit.intro}
+          imageSrc="/site-visit-hero.svg"
+          imageAlt="Book a site visit illustration"
+        />
+      </AnimatedSection>
+        <AnimatedSection delay={0.2}>
       <Suspense fallback={<SiteVisitLoading />}>
         <SiteVisit />
       </Suspense>
+      </AnimatedSection>
     </main>
   );
 }

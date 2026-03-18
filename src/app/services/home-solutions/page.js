@@ -6,7 +6,7 @@ import AvailableServicesLoading from "@/components/services/AvailableServicesLoa
 import DiscoverSection from "@/components/services/DiscoverSection";
 import homeSolutions from "@/content/home-solutions";
 import { siteConfig } from "@/config/site";
-
+import AnimatedSection from "@/components/ui/AnimatedSection";
 export const metadata = {
   title: {
     absolute: `Home Solutions | ${siteConfig.name}`,
@@ -46,12 +46,20 @@ export default function HomeSolutionsPage() {
   const cta = homeSolutions.cta;
   return (
     <main>
-      <Hero title={homeSolutions.hero.title} subtitle={homeSolutions.hero.subtitle}/>
-      <Intro description={homeSolutions.intro.description}/>
-      <Suspense fallback={<AvailableServicesLoading />}>
-        <AvailableServices propertyType="home" />
-      </Suspense>
-      <DiscoverSection propertyType="home" />
+      <AnimatedSection>
+        <Hero title={homeSolutions.hero.title} subtitle={homeSolutions.hero.subtitle}/>
+      </AnimatedSection>
+      <AnimatedSection>
+        <Intro description={homeSolutions.intro.description}/>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<AvailableServicesLoading />}>
+          <AvailableServices propertyType="home" />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <DiscoverSection propertyType="home" />
+      </AnimatedSection>
     </main>
   );
 }

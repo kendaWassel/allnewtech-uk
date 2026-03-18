@@ -4,6 +4,8 @@ import ProjectDetailLoading from "@/components/projects/ProjectDetailLoading";
 import CTA from "@/components/services/ServicesCTA";
 import { apiConfig, fetchFromAPI } from "@/config/api";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
+
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -12,17 +14,19 @@ export async function generateMetadata({ params }) {
     "View detailed information about our security and technology installation project.";
 
   try {
-    const data = await fetchFromAPI(`${apiConfig.endpoints.portfolioProjects}/${id}`, {
-      next: { revalidate: 60 },
-    });
+    const data = await fetchFromAPI(
+      `${apiConfig.endpoints.portfolioProjects}/${id}`,
+      {
+        next: { revalidate: 60 },
+      },
+    );
     if (data?.success && data?.data) {
       title = data.data.title || title;
       const desc = data.data.description || "";
       description =
         desc.length > 160 ? `${desc.slice(0, 157)}...` : desc || description;
     }
-  } catch {
-  }
+  } catch {}
 
   return {
     title: {
@@ -51,11 +55,14 @@ export default async function ProjectPage({ params }) {
   const { id } = await params;
   return (
     <main>
-      <Suspense fallback={<ProjectDetailLoading />}>
-        <ProjectDetail projectId={id} />
-      </Suspense>
-      <CTA className="lg:!mx-[6rem] lg:!w-[50%] !mt-0 !mb-[7rem]" />
+      <AnimatedSection>
+        <Suspense fallback={<ProjectDetailLoading />}>
+          <ProjectDetail projectId={id} />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="lg:!mx-[6rem] lg:!w-[50%] !mt-0 !mb-[7rem]" />
+      </AnimatedSection>
     </main>
   );
 }
-

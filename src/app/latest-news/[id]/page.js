@@ -4,6 +4,7 @@ import LatestNewsBlogLoading from "@/components/latestNewsBlog/LatestNewsBlogLoa
 import CTA from "@/components/services/ServicesCTA";
 import { apiConfig, fetchFromAPI } from "@/config/api";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
@@ -19,10 +20,11 @@ export async function generateMetadata({ params }) {
       title = data.data.title || title;
       const content = data.data.content || "";
       description =
-        content.length > 160 ? `${content.slice(0, 157)}...` : content || description;
+        content.length > 160
+          ? `${content.slice(0, 157)}...`
+          : content || description;
     }
-  } catch {
-  }
+  } catch {}
 
   return {
     title: {
@@ -51,10 +53,14 @@ export default async function LatestNewsBlogPage({ params }) {
   const { id } = await params;
   return (
     <main>
-      <Suspense fallback={<LatestNewsBlogLoading />}>
-        <LatestNewsBlog newsId={id} />
-      </Suspense>
-      <CTA className="lg:!mx-[6rem] lg:!w-[50%] !mt-0 !mb-[7rem]" />
+      <AnimatedSection>
+        <Suspense fallback={<LatestNewsBlogLoading />}>
+          <LatestNewsBlog newsId={id} />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="lg:!mx-[6rem] lg:!w-[50%] !mt-0 !mb-[7rem]" />
+      </AnimatedSection>
     </main>
   );
 }

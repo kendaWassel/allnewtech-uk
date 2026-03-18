@@ -6,6 +6,7 @@ import AvailableServicesLoading from "@/components/services/AvailableServicesLoa
 import DiscoverSection from "@/components/services/DiscoverSection";
 import commercialSolutions from "@/content/commercial-solutions";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
@@ -45,13 +46,23 @@ export const metadata = {
 export default function CommercialSolutionsPage() {
   return (
     <main>
-      <Hero title={commercialSolutions.hero.title} subtitle={commercialSolutions.hero.subtitle}/>
-      <Intro description={commercialSolutions.intro.description}/>
-      <Suspense fallback={<AvailableServicesLoading />}>
-        <AvailableServices propertyType="commercial" />
-      </Suspense>
-      <DiscoverSection propertyType="commercial" />
+      <AnimatedSection>
+        <Hero
+          title={commercialSolutions.hero.title}
+          subtitle={commercialSolutions.hero.subtitle}
+        />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Intro description={commercialSolutions.intro.description} />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<AvailableServicesLoading />}>
+          <AvailableServices propertyType="commercial" />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <DiscoverSection propertyType="commercial" />
+      </AnimatedSection>
     </main>
   );
 }
-

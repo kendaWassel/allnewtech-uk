@@ -4,6 +4,7 @@ import portfolio from "@/content/portfolio";
 import PortfolioProjects from "@/components/projects/Projects";
 import ProjectsLoading from "@/components/projects/ProjectsLoading";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
@@ -42,11 +43,14 @@ export const metadata = {
 export default function ProjectsPage() {
   return (
     <main>
-      <Hero title={portfolio.hero.title} subtitle={portfolio.hero.subtitle} />
-      <Suspense fallback={<ProjectsLoading />}>
-        <PortfolioProjects />
-      </Suspense>
+      <AnimatedSection>
+        <Hero title={portfolio.hero.title} subtitle={portfolio.hero.subtitle} />
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <Suspense fallback={<ProjectsLoading />}>
+          <PortfolioProjects />
+        </Suspense>
+      </AnimatedSection>
     </main>
   );
 }
-

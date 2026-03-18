@@ -3,6 +3,7 @@ import ContactForm from "@/components/contact/ContactForm";
 import ContactFormLoading from "@/components/contact/ContactFormLoading";
 import CTA from "@/components/home/CTA";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
@@ -41,11 +42,14 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main>
-      <Suspense fallback={<ContactFormLoading />}>
-        <ContactForm />
-      </Suspense>
-      <CTA className="mb-[6rem]"/>
+      <AnimatedSection>
+        <Suspense fallback={<ContactFormLoading />}>
+          <ContactForm />
+        </Suspense>
+      </AnimatedSection>
+      <AnimatedSection delay={0.2}>
+        <CTA className="mb-[6rem]" />
+      </AnimatedSection>
     </main>
   );
 }
-

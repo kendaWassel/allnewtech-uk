@@ -4,6 +4,7 @@ import CustomQuoteLoading from "@/components/customQuote/CustomQuoteLoading";
 import FormIntroHero from "@/components/layout/FormIntroHero";
 import contact from "@/content/contact.json";
 import { siteConfig } from "@/config/site";
+import AnimatedSection from "@/components/ui/AnimatedSection";
 
 export const metadata = {
   title: {
@@ -37,17 +38,20 @@ export const metadata = {
   },
 };
 
-
 export default function CustomQuotePage() {
   return (
     <main>
-      <FormIntroHero
-        title={contact.quoteRequest.intro}
-        imageSrc="/quote-hero.svg"
-      />
-      <Suspense fallback={<CustomQuoteLoading />}>
-        <CustomQuote />
-      </Suspense>
+      <AnimatedSection>
+        <FormIntroHero
+          title={contact.quoteRequest.intro}
+          imageSrc="/quote-hero.svg"
+        />
+      </AnimatedSection>
+      <AnimatedSection>
+        <Suspense fallback={<CustomQuoteLoading />}>
+          <CustomQuote />
+        </Suspense>
+      </AnimatedSection>
     </main>
   );
 }
