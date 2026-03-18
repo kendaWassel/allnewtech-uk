@@ -59,7 +59,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
           <button
             type="button"
             onClick={clearFilters}
-            className={`px-[1.25rem] py-[0.25rem] md:px-[2rem] md:py-[0.5rem] text-[0.75rem] md:text-2xl transition-colors bg-[var(--secondary)] text-white`}
+            className={`cursor-pointer px-[1.25rem] py-[0.25rem] md:px-[2rem] md:py-[0.5rem] text-[0.75rem] md:text-2xl transition-colors bg-[var(--secondary)] text-white`}
           >
             All Projects
           </button>
@@ -70,7 +70,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
                 setActiveFilter('service');
                 setServiceMenuOpen((open) => !open);
               }}
-              className={`flex items-center gap-2 px-[2rem] py-[0.25rem] md:px-[3.75rem] md:py-[0.5rem] text-[0.75rem] md:text-2xl transition-colors bg-[var(--secondary)] text-white`}
+              className={`flex items-center cursor-pointer gap-2 px-[2rem] py-[0.25rem] md:px-[3.75rem] md:py-[0.5rem] text-[0.75rem] md:text-2xl transition-colors bg-[var(--secondary)] text-white`}
             >
               <span>Service</span>
               {selectedServices.length > 0 && (

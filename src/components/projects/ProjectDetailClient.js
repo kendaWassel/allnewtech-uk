@@ -256,10 +256,10 @@ const ProjectDetailClient = ({ project }) => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-[#00000094] z-1000 flex items-center justify-center">
+        <div className="fixed inset-0 bg-[#00000094] z-1000">
           <div
             ref={modalRef}
-            className="relative overflow-hidden bg-[var(--white)] md:max-w-[75%] max-w-[90%] max-h-[90vh] flex flex-col"
+            className="relative start-1/2 translate-x-[-50%] top-1/2 translate-y-[-50%] overflow-hidden bg-[var(--white)] md:max-w-[75%] max-w-[90%] max-h-[90vh] flex flex-col"
           >
               <button
                 onClick={() => setIsModalOpen(false)}
