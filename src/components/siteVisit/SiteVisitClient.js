@@ -83,7 +83,7 @@ const CustomSelect = ({ placeholder, options, value, onChange, error }) => {
   const selectedLabel = options.find((o) => String(o.id) === String(value))?.name || '';
  
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative " ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
@@ -95,7 +95,7 @@ const CustomSelect = ({ placeholder, options, value, onChange, error }) => {
       </button>
  
       {open && (
-        <div className="absolute z-20 mt-1 w-full border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-1 space-y-[0.2rem]">
+        <div className="absolute rounded-[4px] md:rounded-[12px] z-20 mt-1 w-full border border-gray-200 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.12)] p-1 space-y-[0.2rem]">
 {options.map((option) => {
   const isSelected = String(option.id) === String(value);
   return (
