@@ -102,7 +102,7 @@ const CustomSelect = ({ placeholder, options, value, onChange, error }) => {
     <label
       key={option.id}
       className={`block text-xs md:text-sm cursor-pointer px-3 py-2 transition-colors ${
-        isSelected ? 'bg-[var(--secondary)] text-white' : 'hover:bg-[var(--secondary)] hover:text-white'
+        isSelected ? 'bg-[var(--secondary)] text-white' : 'hover:bg-[var(--secondary)] hover:text-white rounded-[4px] md:rounded-[12px]'
       }`}
     >
       <input
