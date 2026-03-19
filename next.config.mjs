@@ -25,7 +25,7 @@ async redirects() {
     { source: '/home-video', destination: '/services/home-solutions', permanent: true },
     { source: '/home-access-control', destination: '/services/home-solutions', permanent: true },
     { source: '/home-alarm', destination: '/services/home-solutions', permanent: true },
-
+    { source: '/home-audio-visual', destination: '/services/home-solutions', permanent: true },
     // old news → latest news
     { source: '/news', destination: '/latest-news', permanent: true },
 
