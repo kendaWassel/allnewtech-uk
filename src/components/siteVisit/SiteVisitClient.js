@@ -87,7 +87,7 @@ const CustomSelect = ({ placeholder, options, value, onChange, error }) => {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className={`w-full bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] text-[0.6rem] md:text-base text-left flex items-center justify-between ${
+        className={`cursor-pointer w-full bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] text-[0.6rem] md:text-base text-left flex items-center justify-between ${
           error ? 'border border-red-500' : ''
         }`}
       >
