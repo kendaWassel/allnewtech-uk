@@ -183,7 +183,7 @@ const ProjectDetailClient = ({ project }) => {
               <div className="relative my-[1.5rem]">
                 {project.propertyType && (
                   <div className="relative">
-                    {project.propertyType === "home" ? (
+                    {project.propertyType.toLowerCase() === "home" ? (
                       <Image
                         src="/projects/home-label.svg"
                         alt="Home Label"
@@ -277,7 +277,7 @@ const ProjectDetailClient = ({ project }) => {
               <div className="flex-1 relative flex items-start">
                 {project.propertyType && (
                   <div className="w-[35px] h-[35px] md:w-[50px] md:h-[50px]">
-                    {project.propertyType === "home" ? (
+                    {project.propertyType.toLowerCase() === "home" ? (
                       <Image
                         src="/projects/home-label.svg"
                         alt="Home Label"

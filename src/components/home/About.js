@@ -35,7 +35,7 @@ const About = async () => {
 
     return (
         <section className='lg:px-[var(--inline-padding)] py-[3rem]'>
-            <div className='flex lg:flex-row flex-col center justify-between'>
+            <div className='flex lg:flex-row flex-col items-center justify-between'>
                 <p className='lg:w-[55%] lg:p-0 px-[4.3rem] lg:text-2xl leading-[1.3] lg:text-start text-center'>{home.about.description}</p>
                 <div className='lg:block hidden w-[32%] lg:text-start text-center'>
                     <h2 className='font-bold text-[2rem] lg:block hidden'>{home.trustedBy.title}</h2>

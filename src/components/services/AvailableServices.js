@@ -22,9 +22,9 @@ const AvailableServices = async ({ propertyType = 'home' }) => {
       updatedAt: service.updated_at,
     }));
 
-    services = allServices.filter((service) => 
-      service.property_type === propertyType
-    );
+services = allServices.filter((service) => 
+  service.property_type?.toLowerCase() === propertyType.toLowerCase()
+);
   } catch (err) {
     error = err.message || 'Failed to load services. Please try again later.';
     services = [];

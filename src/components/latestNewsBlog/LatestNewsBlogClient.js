@@ -26,7 +26,7 @@ const LatestNewsBlogClient = ({ news }) => {
           <h1 className="font-bold text-2xl md:text-3xl lg:text-[2.5rem] mb-[1.5rem]">
             {news.title}
           </h1>
-          <p className="text-base md:text-2xl">
+          <p className="text-base md:text-2xl whitespace-pre-line">
             {news.content}
           </p>
         </div>

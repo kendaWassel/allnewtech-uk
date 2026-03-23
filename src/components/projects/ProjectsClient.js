@@ -145,7 +145,7 @@ const ProjectsClient = ({ projects = [], services = [] }) => {
                       <span
                         className={`absolute top-0 left-0`}
                       >
-                        {project.propertyType === 'home' ?
+                        {project.propertyType.toLowerCase() === 'home' ?
                         <Image
                           src="/projects/home-label.svg"
                           alt="Home Label"
