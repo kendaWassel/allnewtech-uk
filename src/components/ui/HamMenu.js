@@ -11,7 +11,7 @@ const HamMenu = () => {
     <>
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 p-2"
+          className="lg:hidden absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 p-2"
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >

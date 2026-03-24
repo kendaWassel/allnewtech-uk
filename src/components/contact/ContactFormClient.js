@@ -139,7 +139,7 @@ const ContactFormFields = ({
           />
         </div>
         {fieldErrors?.firstName && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+          <p className="mt-1 text-xs md:text-sm text-red-600 text-left">{fieldErrors.firstName}</p>
         )}
       </div>
       <div className="flex-1">
@@ -159,7 +159,7 @@ const ContactFormFields = ({
           />
         </div>
         {fieldErrors?.lastName && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+          <p className="mt-1 text-xs md:text-sm text-red-600 text-left">{fieldErrors.lastName}</p>
         )}
       </div>
     </div>
@@ -179,7 +179,7 @@ const ContactFormFields = ({
       />
     </div>
     {fieldErrors?.email && (
-      <p className="mb-[1.5rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+      <p className="mb-[1.5rem] text-xs md:text-sm text-red-600 text-left">{fieldErrors.email}</p>
     )}
     <div
       className={`bg-[#F3F3F3] shadow-[0px_2px_6px_#00000021] px-[1rem] py-[0.75rem] mb-[1.5rem] ${
@@ -198,7 +198,7 @@ const ContactFormFields = ({
       />
     </div>
     {fieldErrors?.phone && (
-      <p className="mb-[1.5rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+      <p className="mb-[1.5rem] text-xs md:text-sm text-red-600 text-left">{fieldErrors.phone}</p>
     )}
     <div className="flex mb-[1.5rem] gap-[1.25rem] md:gap-[2rem]">
       <div className="flex-1">
@@ -210,7 +210,7 @@ const ContactFormFields = ({
           error={fieldErrors?.serviceInterest}
         />
       {fieldErrors?.serviceInterest && (
-        <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.serviceInterest}</p>
+        <p className="mt-1 text-xs md:text-sm text-red-600 text-left">{fieldErrors.serviceInterest}</p>
       )}
       </div>
       <div className="flex-1">
@@ -222,7 +222,7 @@ const ContactFormFields = ({
           error={fieldErrors?.propertyType}
         />
       {fieldErrors?.propertyType && (
-        <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyType}</p>
+        <p className="mt-1 text-xs md:text-sm text-red-600 text-left">{fieldErrors.propertyType}</p>
       )}
       </div>
     </div>
@@ -410,7 +410,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
   const feedback = (
     <>
       {submitError && (
-        <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-xs md:text-base text-red-700 lg:text-left text-center">
+        <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-xs md:text-base text-red-700 lg:text-left text-center mx-[2.25rem] lg:mx-0">
           <p className="font-semibold mb-1">We couldnt send your message</p>
           <p>{submitError}</p>
         </div>

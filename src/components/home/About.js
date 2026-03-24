@@ -38,7 +38,7 @@ const About = async () => {
             <div className='flex lg:flex-row flex-col lg:items-center justify-between'>
                 <p className='lg:w-[55%] lg:p-0 px-[4.3rem] lg:text-2xl leading-[1.3] lg:text-start text-center'>{home.about.description}</p>
                 <div className='lg:block hidden w-[32%] lg:text-start text-center'>
-                    <h2 className='font-bold text-[2rem] lg:block hidden'>{home.trustedBy.title}</h2>
+                    <h2 className='font-bold text-[2rem]'>{home.trustedBy.title}</h2>
                     {/* brands  */}
                     {error ? (
                         <div className='mt-[2rem]'>
@@ -83,8 +83,8 @@ const About = async () => {
                     )}
                 </div>
                 <div>
-                <h2 className='lg:hidden sr-only'>Trusted By</h2>
-                <Brands className="lg:hidden" companies={error ? null : firstFourCompanies} />
+                <h2 className='font-bold text-2xl text-center mt-[3rem] lg:hidden'>Trusted By</h2>
+                <Brands className="lg:hidden !pt-[2rem]" companies={error ? null : firstFourCompanies} />
                 </div>
             </div>
         </section>

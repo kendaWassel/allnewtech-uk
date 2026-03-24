@@ -165,13 +165,16 @@ const handleSelectChange = (name, value) => {
     });
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0] || null;
-    setFormData((prev) => ({
-      ...prev,
-      file,
-    }));
-  };
+const handleFileChange = (e) => {
+  const file = e.target.files?.[0] || null;
+  if (file && file.size > 10 * 1024 * 1024) {
+    setFieldErrors((prev) => ({ ...prev, file: 'File size must be under 10MB.' }));
+    e.target.value = '';
+    return;
+  }
+  setFieldErrors((prev) => ({ ...prev, file: '' }));
+  setFormData((prev) => ({ ...prev, file }));
+};
   const handlePhoneKeyDown = (e) => {
     const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter', '+', '(', ')', '-', ' '];
     if (!allowed.includes(e.key) && !/^[0-9]$/.test(e.key)) {
@@ -192,7 +195,11 @@ const handleSubmit = async (e) => {
     setSubmitError('Please confirm the consent checkbox to continue.');
     return;
   }
-
+if (formData.file && formData.file.size > 10 * 1024 * 1024) {
+  setFieldErrors((prev) => ({ ...prev, file: 'File size must be under 10MB.' }));
+  setSubmitError('Please fix the highlighted fields and try again.');
+  return;
+}
   const errors = validateQuoteForm(formData);
   if (Object.keys(errors).length > 0) {
     setFieldErrors(errors);
@@ -262,7 +269,7 @@ const handleSubmit = async (e) => {
 
   return (
     <section className="px-[1.3rem] px-0">
-        <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[3rem] py-[3.5rem] lg:p-[6.5rem]">
+        <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[2rem] sm:px-[3rem] py-[3.5rem] lg:p-[6.5rem]">
   <form onSubmit={handleSubmit} noValidate className="">
     <h2 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] lg:mb-[1.5rem] text-start">
       {quoteRequest.title}
@@ -286,7 +293,7 @@ const handleSubmit = async (e) => {
           />
         </div>
         {fieldErrors.firstName && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+          <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.firstName}</p>
         )}
       </div>
       <div className="flex-1">
@@ -306,7 +313,7 @@ const handleSubmit = async (e) => {
           />
         </div>
         {fieldErrors.lastName && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+          <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.lastName}</p>
         )}
       </div>
     </div>
@@ -327,7 +334,7 @@ const handleSubmit = async (e) => {
       />
     </div>
     {fieldErrors.email && (
-      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+      <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.email}</p>
     )}
 
     <div
@@ -347,7 +354,7 @@ const handleSubmit = async (e) => {
         />
     </div>
     {fieldErrors.phone && (
-      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+      <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.phone}</p>
     )}
     <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] lg:mb-[1.5rem] text-start">
       {services.title}
@@ -364,7 +371,7 @@ const handleSubmit = async (e) => {
                 smallText
               />
         {fieldErrors.propertyTypeId && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
+          <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
         )}
       </div>
       <div className="flex-1">
@@ -384,11 +391,11 @@ const handleSubmit = async (e) => {
           />
         </div>
         {fieldErrors.postCode && (
-          <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.postCode}</p>
+          <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.postCode}</p>
         )}
       </div>
     </div>
-    <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] md:mb-[1.5rem] text-start">{services.title}</h3>
+    <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">{services.title}</h3>
       <div className="mb-[1rem] rounded-[4px] md:rounded-[12px] px-[1rem]">
         <div className="flex flex-col gap-2">
 {formOptions.services.map((service) => {
@@ -438,7 +445,7 @@ const handleSubmit = async (e) => {
         </div>
       </div>
     {fieldErrors.serviceIds && (
-      <p className="mb-[1rem] text-xs text-red-600 text-left">
+      <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">
         {fieldErrors.serviceIds}
       </p>
     )}
@@ -487,12 +494,12 @@ const handleSubmit = async (e) => {
     {(fieldErrors.preferredContactMethodId || fieldErrors.budgetRangeId) && (
       <div className="mb-[1rem]">
         {fieldErrors.preferredContactMethodId && (
-          <p className="text-xs text-red-600 text-left">
+          <p className="text-xs md:text-base text-red-600 text-left">
             {fieldErrors.preferredContactMethodId}
           </p>
         )}
         {fieldErrors.budgetRangeId && (
-          <p className="text-xs text-red-600 text-left">
+          <p className="text-xs md:text-base text-red-600 text-left">
             {fieldErrors.budgetRangeId}
           </p>
         )}
@@ -518,7 +525,7 @@ const handleSubmit = async (e) => {
       </label>
     </div>
     {fieldErrors.file && (
-      <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.file}</p>
+      <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.file}</p>
     )}
 
     <label className="pe-[1rem] flex items-start gap-2 mb-[0.5rem] md:mb-[1rem] text-xs md:text-base cursor-pointer">
@@ -563,7 +570,7 @@ const handleSubmit = async (e) => {
   <span>{consent.label}</span>
 </label>
 {fieldErrors.confirmation && (
-  <p className="mb-[1.5rem] text-xs text-red-600 text-left">
+  <p className="mb-[1.5rem] text-xs md:text-base text-red-600 text-left">
     {fieldErrors.confirmation}
   </p>
 )}
@@ -582,13 +589,13 @@ const handleSubmit = async (e) => {
   </form>
 
           {submitError && (
-            <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-xs md:text-base text-red-700">
+            <div className="mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-xs md:text-base lg:text-lg text-red-700">
               <p className="font-semibold mb-1">We couldnt send your request</p>
               <p>{submitError}</p>
             </div>
           )}
           {submitSuccess && (
-            <div className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs md:text-base text-emerald-800">
+            <div className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs md:text-base lg:text-lg text-emerald-800">
               <p className="font-semibold mb-1">Thank you for your request</p>
               <p>{submitSuccess}</p>
             </div>

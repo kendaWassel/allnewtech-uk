@@ -57,13 +57,13 @@ const Brands = async ({ className = "", companies: providedCompanies = null }) =
       ) : (
         <ul className="flex items-center justify-center bg-[#F2F3F4] 
           sm:h-[170px] h-[70px] 
-          xl:gap-[8rem] md:gap-[4rem] gap-[1.5rem]
+          xl:gap-[8rem] lg:gap-[4rem] md:gap-[1.5rem] gap-[1rem]
           sm:px-[var(--inline-padding)] px-[var(--small-padding)]"
         >
           {companies.map((company) => (
             <li
               key={company.id}
-              className="relative w-[3rem] sm:w-[5rem] lg:w-[10rem] h-[50%] flex-shrink-0"
+              className="relative w-[4rem] sm:w-[7rem] md:w-[10rem] h-[50%] flex-shrink-0"
             >
               <Image
                 src={company.logo}

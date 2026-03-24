@@ -33,7 +33,7 @@ const DiscoverSection = ({ propertyType = 'home' }) => {
           <h4 className="text-white text-xs sm:text-2xl lg:text-[2.5rem] font-bold mb-[1rem] md:mb-[2rem] text-left">
             {solution.discover.title}
           </h4>
-          <CTAButton title={solution.discover.button} link={link} color="blue" className="text-[0.5rem] sm:text-xl lg:text-2xl px-[0.5rem] sm:px-[1rem] lg:px-[1.5rem] py-[0.25rem] sm:py-[0.5rem] lg:py-[0.75rem]"/>
+          <CTAButton title={solution.discover.button} link={link} color="blue" className="text-[0.5rem] sm:text-xl lg:text-2xl !px-[0.5rem] sm:!px-[0.8rem] lg:!px-[1.5rem] py-[0.25rem] sm:py-[0.5rem] lg:py-[0.75rem]"/>
         </div>
       </div>
     </section>

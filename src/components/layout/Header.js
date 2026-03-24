@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-1000">
-      <div className="flex items-center justify-between lg:px-[var(--inline-padding)] pe-[1rem] py-4 w-full relative bg-[var(--white)] lg:h-[65px] h-[42px]">
+      <div className="flex items-center justify-between lg:px-[var(--inline-padding)] py-4 w-full relative bg-[var(--white)] lg:h-[65px] h-[42px]">
         <Link href="/" className="absolute left-[var(--small-padding)] lg:left-[var(--inline-padding)] top-0 w-[95px] sm:w-[180px] lg:w-[230px] h-[42px] sm:h-[65px] lg:h-[90px] bg-[var(--secondary)] flex items-center z-10">
           <Image
             src="/Logo-light.svg"

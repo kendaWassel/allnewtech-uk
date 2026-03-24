@@ -288,7 +288,7 @@ const SiteVisitClient = ({
 
   return (
     <section className="px-[1.3rem] px-0">
-      <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[4rem] py-[3.5rem] lg:p-[6.5rem]">
+      <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[2rem] sm:px-[3rem] py-[3.5rem] lg:p-[6.5rem]">
         <form onSubmit={handleSubmit} noValidate className="">
           <h2 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">
             {siteVisit.title}
@@ -312,7 +312,7 @@ const SiteVisitClient = ({
                 />
               </div>
               {fieldErrors.firstName && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.firstName}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.firstName}</p>
               )}
             </div>
             <div className="flex-1">
@@ -332,7 +332,7 @@ const SiteVisitClient = ({
                 />
               </div>
               {fieldErrors.lastName && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.lastName}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.lastName}</p>
               )}
             </div>
           </div>
@@ -353,7 +353,7 @@ const SiteVisitClient = ({
             />
           </div>
           {fieldErrors.email && (
-            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.email}</p>
+            <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.email}</p>
           )}
           <div
             className={`flex-1 bg-[#F3F3F3] rounded-[4px] md:rounded-[12px] px-[0.5rem] py-[0.35rem] md:px-[1rem] md:py-[0.75rem] mb-[0.5rem] md:mb-[1rem] ${
@@ -372,7 +372,7 @@ const SiteVisitClient = ({
             />
           </div>
           {fieldErrors.phone && (
-            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.phone}</p>
+            <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.phone}</p>
           )}
 
           <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">
@@ -389,7 +389,7 @@ const SiteVisitClient = ({
                 error={fieldErrors.propertyTypeId}
               />
               {fieldErrors.propertyTypeId && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.propertyTypeId}</p>
               )}
             </div>
             <div className="flex-1">
@@ -409,7 +409,7 @@ const SiteVisitClient = ({
                 />
               </div>
               {fieldErrors.postCode && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.postCode}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.postCode}</p>
               )}
             </div>
           </div>
@@ -429,7 +429,7 @@ const SiteVisitClient = ({
             />
           </div>
           {fieldErrors.address && (
-            <p className="mb-[1rem] text-xs text-red-600 text-left">{fieldErrors.address}</p>
+            <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">{fieldErrors.address}</p>
           )}
           <h3 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] text-start">
             {services.title}
@@ -483,7 +483,7 @@ const SiteVisitClient = ({
             </div>
           </div>
           {fieldErrors.serviceIds && (
-            <p className="mb-[1rem] text-xs text-red-600 text-left">
+            <p className="mb-[1rem] text-xs md:text-base text-red-600 text-left">
               {fieldErrors.serviceIds}
             </p>
           )}
@@ -506,7 +506,7 @@ const SiteVisitClient = ({
                 />
               </div>
               {fieldErrors.preferredDate && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.preferredDate}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.preferredDate}</p>
               )}
             </div>
             <div className="flex-1">
@@ -518,7 +518,7 @@ const SiteVisitClient = ({
                 error={fieldErrors.preferredTimeId}
               />
               {fieldErrors.preferredTimeId && (
-                <p className="mt-1 text-xs text-red-600 text-left">{fieldErrors.preferredTimeId}</p>
+                <p className="mt-1 text-xs md:text-base text-red-600 text-left">{fieldErrors.preferredTimeId}</p>
               )}
             </div>
           </div>
@@ -576,7 +576,7 @@ const SiteVisitClient = ({
   <span>{consent.label}</span>
 </label>
 {fieldErrors.confirmation && (
-  <p className="mb-[1.5rem] text-xs text-red-600 text-left">
+  <p className="mb-[1.5rem] text-xs md:text-base text-red-600 text-left">
     {fieldErrors.confirmation}
   </p>
 )}
