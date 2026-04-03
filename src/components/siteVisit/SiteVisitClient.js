@@ -287,7 +287,7 @@ const SiteVisitClient = ({
   }
 
   return (
-    <section className="px-[1.3rem] px-0">
+    <section className="px-[1.3rem]">
       <div className="relative top-[-1.5rem] lg:top-[-8rem] mx-auto w-[fit-content] bg-[var(--white)] px-[2rem] sm:px-[3rem] py-[3.5rem] lg:p-[6.5rem]">
         <form onSubmit={handleSubmit} noValidate className="">
           <h2 className="font-bold md:text-2xl lg:text-[2rem] mb-[1rem] md:mb-[1.5rem] text-start">

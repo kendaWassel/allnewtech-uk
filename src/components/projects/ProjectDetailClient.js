@@ -322,7 +322,7 @@ const ProjectDetailClient = ({ project }) => {
                     src={allImages[modalImageIndex]}
                     alt={`${project.title} - Image ${modalImageIndex + 1}`}
                     fill
-                    className="object-cover w-full h-full"
+                    className="object-contain w-full h-full"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 80vw"
                   />
                 )}
@@ -340,7 +340,7 @@ const ProjectDetailClient = ({ project }) => {
             {/* thumbnail row in modal */}
             {/* its width is smaller than the main image so it will depends on the padding ,taking the full width minus x2 of padding(right,left) */}
             <div className="max-w-[calc(100%_-_8rem)] lg:max-w-[calc(100%_-_12rem)] mx-[auto] md:mt-[2rem] mt-[0.5rem] lg:px-[6rem]">
-              <div className="flex gap-1 md:gap-2 overflow-x-auto overflow-y-hidden pb-2 justify-center [scrollbar-width:thin] [scrollbar-color:#8B909A_transparent] [&::-webkit-scrollbar]:h-[8px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#8B909A] [&::-webkit-scrollbar-thumb]:border-[2px] [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-[#737A85]">
+              <div className="flex gap-1 md:gap-2 overflow-x-auto overflow-y-hidden pb-2 justify-start [scrollbar-width:thin] [scrollbar-color:#8B909A_transparent] [&::-webkit-scrollbar]:h-[8px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#8B909A] [&::-webkit-scrollbar-thumb]:border-[2px] [&::-webkit-scrollbar-thumb]:border-transparent [&::-webkit-scrollbar-thumb]:bg-clip-content [&::-webkit-scrollbar-thumb:hover]:bg-[#737A85]">
                 {allImages.map((img, index) => (
                   <button
                     key={index}

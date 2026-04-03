@@ -83,7 +83,7 @@ const About = async () => {
                     )}
                 </div>
                 <div>
-                <h2 className='font-bold text-2xl text-center mt-[3rem] lg:hidden'>Trusted By</h2>
+                <h2 className='font-bold text-2xl text-center mt-[3rem] lg:hidden'>{home.trustedBy.title}</h2>
                 <Brands className="lg:hidden !pt-[2rem]" companies={error ? null : firstFourCompanies} />
                 </div>
             </div>

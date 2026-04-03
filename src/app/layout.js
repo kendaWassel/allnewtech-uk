@@ -3,7 +3,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
-import ErrorLogger from "./ErrorLogger";
 
 const montserrat = Montserrat({
   weight: ['400','700'],
@@ -67,7 +66,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-GB">
       <body className={`${montserrat.className}`}>
-        <ErrorLogger />
         <Header />
         {children}
         <Footer />

@@ -9,9 +9,7 @@ const isLocalApi =
   process.env.NEXT_PUBLIC_API_BASE_URL.includes('127.0.0.1');
 
 const nextConfig = {
-    experimental: {
-    forceSwcTransforms: true,
-  },
+
 async redirects() {
   return [
     // old contact

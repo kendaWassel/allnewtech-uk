@@ -416,7 +416,7 @@ const ContactFormClient = ({ services = [], propertyTypes = [], locations = [], 
         </div>
       )}
       {submitSuccess && (
-        <div className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs md:text-base text-emerald-800 lg:text-left text-center">
+        <div className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs md:text-base text-emerald-800 lg:text-left text-center mx-[2.25rem] lg:mx-0">
           <p className="font-semibold mb-1">Thank you for getting in touch</p>
           <p>{submitSuccess}</p>
         </div>
