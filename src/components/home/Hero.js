@@ -5,7 +5,7 @@ export default function Hero() {
   const hero = home.hero;
   const cta = hero.cta;
   return (
-    <section className="relative lg:h-screen h-[80vh] overflow-hidden">
+    <section className="relative lg:h-[calc(100vh_+_85px)] lg:top-[-85px] top-0 h-[80vh] overflow-hidden">
       <Image
         src="/home/Hero-Section-BG.png"
         alt=""

@@ -2,8 +2,9 @@ import { Montserrat } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { siteConfig } from "@/config/site";
+import Link from 'next/link';
+import Image from 'next/image';
 import "./globals.css";
-
 const montserrat = Montserrat({
   weight: ['400','700'],
 });
@@ -69,6 +70,18 @@ export default function RootLayout({ children }) {
         <Header />
         {children}
         <Footer />
+        <Link
+          href="/contact-us"
+          className="fixed bottom-[2rem] right-[2rem] z-[9999] bg-white hover:bg-[var(--white)] hover:bg-[var(--primary-blue-second)] transition-colors duration-300 w-[3.5rem] h-[3.5rem] rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
+          aria-label="Contact Us"
+        >
+          <Image
+            src="/icons/contact-float.svg"
+            alt="Contact Us"
+            width={24}
+            height={24}
+          />
+        </Link>
       </body>
     </html>
   );
