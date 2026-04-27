@@ -3,7 +3,7 @@ import Image from "next/image";
 const FormIntroHero = ({ title, imageSrc }) => {
   return (
     <section 
-    className="relative h-[9rem] lg:h-[30rem] w-full"
+    className="relative h-[9rem] lg:h-[30rem] w-full lg:h-[calc(30_+_85px)] lg:top-[-85px] top-0"
     >
       <Image
         src={imageSrc}

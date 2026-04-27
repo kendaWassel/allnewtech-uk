@@ -3,10 +3,22 @@ import Link from "next/link";
 import Image from "next/image";
 import HamMenu from "../ui/HamMenu";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
+  const pathname = usePathname();
+
+  const alwaysLight = ['/about', '/contact-us'].includes(pathname) || pathname.startsWith('/latest-news/');
+
+  useEffect(() => {
+    const checkScreen = () => setIsLargeScreen(window.innerWidth >= 1024);
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,16 +28,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-const [isLargeScreen, setIsLargeScreen] = useState(false);
-
-useEffect(() => {
-  const checkScreen = () => setIsLargeScreen(window.innerWidth >= 1024);
-  checkScreen();
-  window.addEventListener('resize', checkScreen);
-  return () => window.removeEventListener('resize', checkScreen);
-}, []);
-
-const isLight = isLargeScreen ? (scrolled || hovered) : false;
+  const isLight = alwaysLight || (isLargeScreen ? (scrolled || hovered) : false);
 
   return (
     <header className="sticky top-0 z-1000 group/header">
@@ -35,10 +38,10 @@ const isLight = isLargeScreen ? (scrolled || hovered) : false;
         className={`flex items-center justify-between lg:px-[var(--inline-padding)] py-4 w-full relative transition-colors duration-300 lg:h-[85px] md:h-[65px] sm:h-[60px] h-[50px] ${
           isLight
             ? "bg-[var(--white)]"
-            : "lg:bg-transparent bg-white"
+            : "lg:bg-transparent bg-[var(--white)]"
         }`}
       >
-        <Link href="/" className="absolute left-[calc(var(--small-padding)_-_15px)] lg:left-[var(--inline-padding)] top-0 w-[150px] sm:w-[180px] lg:w-[230px] h-[50px] sm:h-[60px] lg:h-[85px] flex items-center z-10">
+        <Link href="/" className="absolute left-[calc(var(--small-padding)_-_15px)] lg:left-[var(--inline-padding)] top-0 w-[150px] sm:w-[180px] lg:w-[230px] h-[50px] sm:h-[60px] md:h-[65px] lg:h-[85px] flex items-center z-10">
           <Image
             src={isLight ? "/logo-scroll.png" : "/logo-white.png"}
             alt="All New Tech Logo"
