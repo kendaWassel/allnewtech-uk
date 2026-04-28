@@ -35,13 +35,13 @@ const Header = () => {
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className={`flex items-center justify-between lg:px-[var(--inline-padding)] py-4 w-full relative transition-colors duration-300 lg:h-[85px] md:h-[65px] sm:h-[60px] h-[50px] ${
+        className={`flex items-center justify-between lg:px-[var(--inline-padding)] py-4 w-full relative transition-colors duration-300 lg:h-[85px] md:h-[65px] h-[60px] ${
           isLight
             ? "bg-[var(--white)]"
             : "lg:bg-transparent bg-[var(--white)]"
         }`}
       >
-        <Link href="/" className="absolute left-[calc(var(--small-padding)_-_15px)] lg:left-[var(--inline-padding)] top-0 w-[150px] sm:w-[180px] lg:w-[230px] h-[50px] sm:h-[60px] md:h-[65px] lg:h-[85px] flex items-center z-10">
+        <Link href="/" className="absolute left-[calc(var(--small-padding)_-_15px)] lg:left-[var(--inline-padding)] top-0 w-[160px] sm:w-[180px] lg:w-[230px] h-[60px] md:h-[65px] lg:h-[85px] flex items-center z-10">
           <Image
             src={isLight ? "/logo-scroll.png" : "/logo-white.png"}
             alt="All New Tech Logo"
